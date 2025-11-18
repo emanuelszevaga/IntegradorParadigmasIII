@@ -18,4 +18,4 @@ echo json_encode([
         ['nombre' => 'password_confirm', 'tipo' => 'password', 'placeholder' => '••••••••', 'requerido' => true]
     ]
 ]);
-?>
+

@@ -100,7 +100,7 @@ try {
             // Insertar detalle
             $insert_detalle = $conexion->prepare(
                 "INSERT INTO pedidos_detalles (pedido_id, producto_id, cantidad, precio_unitario, subtotal) 
-                 VALUES (?, ?, ?, ?, ?)"
+                VALUES (?, ?, ?, ?, ?)"
             );
             if (!$insert_detalle) {
                 throw new Exception("Error: " . $conexion->error);
@@ -145,4 +145,4 @@ try {
     http_response_code(500);
     echo json_encode(['estado' => 'error', 'mensaje' => $e->getMessage()]);
 }
-?>
+

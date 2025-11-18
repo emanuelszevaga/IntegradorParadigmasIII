@@ -61,4 +61,4 @@ function cerrarConexion() {
 
 // Obtener conexión automáticamente al incluir este archivo
 obtenerConexion();
-?>
+
