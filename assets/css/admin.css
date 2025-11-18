@@ -20,7 +20,7 @@ body {
 /* SIDEBAR */
 .admin-sidebar {
     width: 260px;
-    background: linear-gradient(135deg, #2d5016 0%, #4a7c2c 100%);
+    background: linear-gradient(135deg, #255d3c 0%, #3a7e55 100%);
     color: white;
     padding: 20px 0;
     position: fixed;
@@ -157,7 +157,7 @@ body {
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(135deg, #2d5016 0%, #4a7c2c 100%);
+    background: linear-gradient(135deg, #255d3c 0%, #3a7e55 100%);
 }
 
 .card-icon {
@@ -168,7 +168,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #2d5016;
+    color: #255d3c;
     font-size: 24px;
 }
 
@@ -181,14 +181,14 @@ body {
 .card-value {
     font-size: 28px;
     font-weight: bold;
-    color: #2d5016;
+    color: #255d3c;
 }
 
 .card-link {
     position: absolute;
     bottom: 10px;
     right: 10px;
-    color: #4a7c2c;
+    color: #3a7e55;
     text-decoration: none;
     font-size: 12px;
     opacity: 0;
@@ -211,7 +211,7 @@ body {
 .dashboard-section h2 {
     font-size: 18px;
     margin-bottom: 15px;
-    color: #2d5016;
+    color: #255d3c;
 }
 
 .productos-list,
@@ -338,12 +338,12 @@ body {
 }
 
 .btn-primary {
-    background: #2d5016;
+    background: #255d3c;
     color: white;
 }
 
 .btn-primary:hover {
-    background: #4a7c2c;
+    background: #3a7e55;
 }
 
 .btn-secondary {
@@ -369,7 +369,7 @@ body {
     border: none;
     cursor: pointer;
     font-size: 16px;
-    color: #2d5016;
+    color: #255d3c;
     padding: 5px;
     border-radius: 4px;
     transition: all 0.3s ease;
@@ -377,7 +377,7 @@ body {
 
 .btn-icon:hover {
     background: #f0f0f0;
-    color: #4a7c2c;
+    color: #3a7e55;
 }
 
 .btn-icon.btn-danger {
@@ -470,7 +470,7 @@ body {
 }
 
 .modal-header h2 {
-    color: #2d5016;
+    color: #255d3c;
     font-size: 20px;
 }
 
