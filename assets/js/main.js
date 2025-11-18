@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (usuarioGuardado) {
         try {
             window.usuarioAutenticado = JSON.parse(usuarioGuardado);
-            actualizarUIPostLogin(); 
         } catch(e) {
             console.error("[v0] Error al parsear usuario de localStorage:", e);
             localStorage.removeItem('usuarioAutenticado');
@@ -720,6 +719,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Inicia la carga de productos y la UI
     await cargarProductosCompletos()
     updateCartUI()
+    actualizarUIPostLogin()
 
     // para reflejar cambios realizados por el administrador
     setInterval(async () => {
