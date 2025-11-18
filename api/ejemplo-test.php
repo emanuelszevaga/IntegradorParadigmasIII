@@ -1,7 +1,7 @@
 <?php
 /**
  * Archivo de prueba para verificar que todas las APIs funcionan
- * Acceder desde: http://localhost/integrador30/api/ejemplo-test.php
+ * Acceder desde: http://localhost/integrador3.0/api/ejemplo-test.php
  */
 require_once(__DIR__ . '/../config/configuracion.php');
 
@@ -47,7 +47,7 @@ header('Content-Type: application/html; charset=utf-8');
     </div>
 
     <script>
-    const API_BASE = '/integrador30/api'
+    const API_BASE = '/integrador3.0/api'
     
     async function testConexion() {
         try {

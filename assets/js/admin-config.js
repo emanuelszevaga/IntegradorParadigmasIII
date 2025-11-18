@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnLogout) {
         btnLogout.addEventListener('click', async () => {
             await fetch(API_BASE + '/auth/logout.php');
-            window.location.href = '/integrador30/';
+            window.location.href = '/integrador3.0/';
         });
     }
 });

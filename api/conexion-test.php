@@ -1,7 +1,7 @@
 <?php
 /**
  * Archivo de prueba para verificar que la conexión a BD funciona correctamente
- * Acceder desde: http://localhost/integrador30/api/conexion-test.php
+ * Acceder desde: http://localhost/integrador3.0/api/conexion-test.php
  */
 require_once(__DIR__ . '/../config/configuracion.php');
 
