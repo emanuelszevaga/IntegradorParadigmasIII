@@ -9,7 +9,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // Configuración de zona horaria
-date_default_timezone_set('America/Argentina/Misiones');
+date_default_timezone_set('America/Argentina/Buenos_Aires');
 
 // Configuración de errores (desactivar en producción)
 ini_set('display_errors', 0);
@@ -33,5 +33,5 @@ define('EXTENSIONES_PERMITIDAS', ['jpg', 'jpeg', 'png', 'gif']);
 header('X-Content-Type-Options: nosniff');
 header('X-Frame-Options: SAMEORIGIN');
 header('X-XSS-Protection: 1; mode=block');
-header('Content-Type: text/html; charset=utf-8');
-
+// This was causing conflicts with JSON responses from API endpoints
+?>

@@ -9,32 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (checkoutBtn) {
         checkoutBtn.addEventListener('click', procesarCheckout)
     }
-    
-    // Verificar sesión al iniciar
-    verificarSesionUsuario()
 })
-
-/**
- * Verificar si el usuario tiene sesión activa
- */
-async function verificarSesionUsuario() {
-    try {
-        const response = await fetch(API_BASE + '/auth/verificar-sesion.php')
-        const data = await response.json()
-        
-        console.log("[v0] Estado de sesión:", data)
-        
-        if (data.estado === 'autenticado') {
-            console.log("[v0] Usuario autenticado:", data.usuario.nombre)
-            window.usuarioAutenticado = data.usuario
-        } else {
-            console.log("[v0] Usuario no autenticado")
-            window.usuarioAutenticado = null
-        }
-    } catch (error) {
-        console.error("[v0] Error al verificar sesión:", error)
-    }
-}
 
 /**
  * Procesar el checkout
@@ -45,7 +20,6 @@ async function procesarCheckout() {
     // Verificar si el usuario está autenticado
     if (!window.usuarioAutenticado) {
         alert('Debes iniciar sesión para realizar la compra')
-        // Abrir modal de login
         const loginBtn = document.querySelector('#login-btn')
         if (loginBtn) loginBtn.click()
         return
@@ -59,21 +33,44 @@ async function procesarCheckout() {
         return
     }
     
-    // La API espera: id, cantidad, precio
-    // El localStorage tiene: nombre, precio, imagen, cantidad
-    
-    // Por ahora haremos una simulación convertir datos
-    const carritoFormato = carrito.map(item => ({
-        nombre: item.nombre,
-        cantidad: item.cantidad,
-        precio: item.precio
+    const carritoFormato = await Promise.all(carrito.map(async (item) => {
+        try {
+            const response = await fetch(`${API_BASE}/productos/obtener.php`)
+            const data = await response.json()
+            
+            if (data.estado === 'exitoso') {
+                const producto = data.productos.find(p => p.nombre === item.nombre)
+                if (producto) {
+                    return {
+                        id: producto.id,
+                        cantidad: item.cantidad,
+                        precio: item.precio
+                    }
+                }
+            }
+        } catch (e) {
+            console.error("[v0] Error fetching product ID:", e)
+        }
+        
+        return null
     }))
     
-    console.log("[v0] Carrito a procesar:", carritoFormato)
+    // Filter out null values
+    const carritoValido = carritoFormato.filter(item => item !== null)
+    
+    if (carritoValido.length === 0) {
+        alert('Error: No se pudieron obtener los IDs de los productos')
+        return
+    }
+    
+    console.log("[v0] Carrito a procesar:", carritoValido)
+    
+    const totalItems = carrito.reduce((sum, item) => sum + item.cantidad, 0)
+    const totalPrecio = carrito.reduce((sum, item) => sum + (item.precio * item.cantidad), 0)
     
     const confirmacion = confirm(
-        `¿Confirmar compra de ${carrito.length} producto(s)?\n` +
-        `Total: $${carrito.reduce((sum, item) => sum + (item.precio * item.cantidad), 0).toLocaleString('es-AR')}`
+        `¿Confirmar compra de ${totalItems} producto(s)?\n` +
+        `Total: $${totalPrecio.toLocaleString('es-AR')}`
     )
     
     if (!confirmacion) return
@@ -87,7 +84,7 @@ async function procesarCheckout() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                carrito: carritoFormato
+                carrito: carritoValido
             })
         })
         
@@ -99,10 +96,6 @@ async function procesarCheckout() {
             
             localStorage.removeItem('viveroCart')
             
-            // Actualizar interfaz del carrito
-            cart = []
-            updateCartUI()
-            
             // Cerrar modal de carrito
             const cartSidebar = document.getElementById('cart-sidebar')
             if (cartSidebar) {
@@ -110,6 +103,9 @@ async function procesarCheckout() {
                 document.getElementById('cart-overlay').classList.remove('show')
                 document.body.style.overflow = 'auto'
             }
+            
+            // Reload page to refresh cart
+            location.reload()
         } else {
             alert(`Error: ${resultado.mensaje}`)
         }

@@ -38,15 +38,16 @@ document.addEventListener("DOMContentLoaded", async () => {
             const etiquetaStock = disponible ? '' : '<div class="etiqueta-stock">Sin stock</div>'
             const deshabilitado = !disponible ? 'disabled' : ''
             const textoBtnStock = disponible ? 'Agregar al carrito' : 'Agregar al carrito'
+            const imagenNormalizada = producto.imagen.replace(/\\/g, '/')
             
             return `
                 <div class="producto-card ${producto.categoria_nombre ? producto.categoria_nombre.toLowerCase().replace(/ /g, '-') : ''}" 
                     data-nombre="${producto.nombre}" 
                     data-precio="${producto.precio}" 
-                    data-imagen="${producto.imagen}"
+                    data-imagen="${imagenNormalizada}"
                     data-descripcion="${producto.descripcion}"
                     data-stock="${claseStock}">
-                    <img src="${producto.imagen}" alt="${producto.nombre}">
+                    <img src="${imagenNormalizada}" alt="${producto.nombre}">
                     ${etiquetaStock}
                     <h3>${producto.nombre}</h3>
                     <p class="precio">$${Number(producto.precio).toLocaleString('es-AR')}</p>
@@ -74,12 +75,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         
         contenedor.innerHTML = topProductos.map(producto => `
             <div class="producto-slide">
-                <img src="${producto.imagen}" alt="${producto.nombre}">
+                <img src="${producto.imagen.replace(/\\/g, '/')}" alt="${producto.nombre}">
                 <h3>${producto.nombre}</h3>
                 <p class="precio">$${Number(producto.precio).toLocaleString('es-AR')}</p>
             </div>
         `).join('')
-        
+
         // Reinicializar Slick Carousel
         if (jQuery && jQuery('.carrusel-productos').length) {
             jQuery('.carrusel-productos').slick('unslick')
@@ -120,7 +121,8 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const descripcion = card.getAttribute('data-descripcion')
                 const stock = card.getAttribute('data-stock')
                 
-                document.getElementById('modal-img').src = imagen
+                const imagenNormalizada = imagen.replace(/\\/g, '/')
+                document.getElementById('modal-img').src = imagenNormalizada
                 document.getElementById('modal-nombre').textContent = nombre
                 document.getElementById('modal-precio').textContent = `$${Number.parseInt(precio).toLocaleString("es-AR")}`
                 document.getElementById('modal-descripcion').textContent = descripcion
@@ -345,7 +347,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 searchResults.innerHTML = results
                     .map(
                         (product) => `<div class="search-result-item" data-nombre="${product.nombre}" data-precio="${product.precio}" data-imagen="${product.imagen}" data-stock="${product.stock}">
-                            <img src="${product.imagen}" alt="${product.nombre}">
+                            <img src="${product.imagen.replace(/\\/g, '/')}" alt="${product.nombre}">
                             <div class="search-result-info">
                                 <h4>${product.nombre}</h4>
                                 <p>$${Number.parseInt(product.precio).toLocaleString("es-AR")}</p>
@@ -370,7 +372,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                         const productCard = Array.from(document.querySelectorAll('.producto-card')).find((card) => card.getAttribute("data-nombre") === nombre)
                         const descripcion = productCard ? productCard.getAttribute("data-descripcion") : ""
 
-                        document.getElementById("modal-img").src = imagen
+                        const imagenNormalizada = imagen.replace(/\\/g, '/')
+                        document.getElementById("modal-img").src = imagenNormalizada
+
                         document.getElementById("modal-nombre").textContent = nombre
                         document.getElementById("modal-precio").textContent = `$${Number.parseInt(precio).toLocaleString("es-AR")}`
                         document.getElementById("modal-descripcion").textContent = descripcion
@@ -447,7 +451,24 @@ document.addEventListener("DOMContentLoaded", async () => {
                         body: JSON.stringify({ email, password })
                     })
 
-                    const resultado = await response.json()
+                    if (!response.ok && response.status !== 401 && response.status !== 400) {
+                        console.error("[v0] Response status:", response.status)
+                        throw new Error(`HTTP Error: ${response.status}`)
+                    }
+
+                    const texto = await response.text()
+                    console.log("[v0] Login response text:", texto)
+                    
+                    let resultado
+                    try {
+                        resultado = JSON.parse(texto)
+                    } catch (parseError) {
+                        console.error("[v0] Error parsing JSON:", parseError)
+                        console.error("[v0] Response text was:", texto)
+                        alert('Error al iniciar sesión. La respuesta del servidor no es válida.')
+                        return
+                    }
+                    
                     console.log("[v0] Login response:", resultado)
 
                     if (resultado.estado === 'exitoso') {
@@ -469,7 +490,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                     }
                 } catch (error) {
                     console.error("[v0] Login error:", error)
-                    alert('Error al iniciar sesión. Verifica tu conexión.')
+                    alert('Error al iniciar sesión: ' + error.message)
                 }
             })
         }
@@ -574,17 +595,36 @@ document.addEventListener("DOMContentLoaded", async () => {
             const rol = window.usuarioAutenticado.rol || 'usuario'
             const icon = rol === 'administrador' ? 'fa-user-shield' : 'fa-user-check'
             loginBtn.innerHTML = `<i class="fa-solid ${icon}"></i>`
-            loginBtn.title = `Conectado como ${window.usuarioAutenticado.nombre}`
+            loginBtn.title = `Conectado como ${window.usuarioAutenticado.nombre} (Click para cerrar sesión)`
+            
+            loginBtn.onclick = (e) => {
+                e.preventDefault()
+                const confirmar = confirm(`¿Deseas cerrar sesión, ${window.usuarioAutenticado.nombre}?`)
+                if (confirmar) {
+                    cerrarSesion()
+                }
+            }
+        } else {
+            loginBtn.innerHTML = `<i class="fa-solid fa-user"></i>`
+            loginBtn.title = 'Iniciar sesión'
+            loginBtn.onclick = null
         }
     }
 
-    window.addEventListener('load', () => {
-        const usuarioGuardado = localStorage.getItem('usuarioAutenticado')
-        if (usuarioGuardado) {
-            window.usuarioAutenticado = JSON.parse(usuarioGuardado)
-            actualizarUIPostLogin()
-        }
-    })
+    function cerrarSesion() {
+        window.usuarioAutenticado = null
+        localStorage.removeItem('usuarioAutenticado')
+        cart = []
+        localStorage.removeItem('viveroCart')
+        
+        // Reset UI
+        const loginBtn = document.getElementById("login-btn")
+        loginBtn.innerHTML = `<i class="fa-solid fa-user"></i>`
+        loginBtn.title = 'Iniciar sesión'
+        loginBtn.onclick = null
+        
+        alert('Sesión cerrada correctamente')
+    }
 
     const cartBtn = document.querySelector(".container-actions button:nth-child(3)")
     const cartSidebar = document.getElementById("cart-sidebar")
@@ -728,12 +768,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             document.body.style.overflow = "auto"
         })
 
-        // simulacion redirigir a pagina de pago
+        // Use real checkout
         const checkoutBtn = document.querySelector(".btn-checkout")
         if (checkoutBtn) {
             checkoutBtn.addEventListener("click", () => {
                 if (cart.length > 0) {
-                    alert("Página de pago en construcción :)")
+                    procesarCheckout()
                 }
             })
         }
@@ -749,3 +789,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     // actualiza la interfaz al cargar
     updateCartUI()
 })
+
+function procesarCheckout() {
+    // Placeholder function for processing checkout
+    alert("Procesando pago...")
+}
