@@ -23,7 +23,7 @@ require_once __DIR__ . '/seguridad.php';
 
 // Constantes de la aplicación
 define('NOMBRE_APP', 'Vivero MyM');
-define('RUTA_BASE', '/integrador302/');
+define('RUTA_BASE', '/integrador3.0/');
 define('RUTA_IMAGENES', RUTA_BASE . 'assets/imagenes/productos/');
 define('RUTA_IMAGENES_LOCAL', __DIR__ . '/../assets/imagenes/productos/');
 define('TAMANIO_MAXIMO_ARCHIVO', 5 * 1024 * 1024); // 5MB

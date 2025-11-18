@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    const API_BASE = '/integrador302/api'
+    const API_BASE = '/integrador3.0/api'
 
     async function obtenerProductosDelServidor(categoria = null, ordenar = 'nombre') {
         try {
