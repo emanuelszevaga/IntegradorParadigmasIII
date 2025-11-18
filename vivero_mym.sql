@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3307
--- Tiempo de generación: 18-11-2025 a las 08:38:06
+-- Tiempo de generación: 19-11-2025 a las 00:08:37
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -143,7 +143,7 @@ CREATE TABLE `productos` (
 --
 
 INSERT INTO `productos` (`id`, `nombre`, `descripcion`, `precio`, `stock`, `cantidad_vendida`, `categoria_id`, `imagen`, `estado`, `fecha_creacion`) VALUES
-(1, 'Limón 4 estaciones', 'Limón de excelente calidad que produce frutos durante todo el año. Ideal para climas cálidos y templados.', 6000.00, 20, 55, 1, '/integrador3.0/assets/imagenes/productos/691c0adec8f90.jpg', 1, '2025-11-17 22:02:06'),
+(1, 'Limón 4 estaciones', 'Limón de excelente calidad que produce frutos durante todo el año. Ideal para climas cálidos y templados.', 5000.00, 13, 62, 1, '/integrador3.0/assets/imagenes/productos/691c0adec8f90.jpg', 1, '2025-11-17 22:02:06'),
 (2, 'Naranja ombligo', 'Naranja dulce y jugosa, perfecta para consumo fresco. Frutos grandes sin semillas.', 6000.00, 12, 38, 1, '/integrador3.0/assets/imagenes/productos/691c0b1bbb88f.jpg', 1, '2025-11-17 22:02:06'),
 (3, 'Mango', 'Mango tropical de pulpa dulce y aromática. Excelente para consumo fresco y preparaciones.', 6000.00, 0, 26, 3, '/integrador3.0/assets/imagenes/productos/691c0af53debf.jpg', 1, '2025-11-17 22:02:06'),
 (4, 'Naranja de jugo', 'Naranja especialmente seleccionada para jugos. Alto contenido de jugo y sabor intenso.', 6000.00, 20, 35, 1, '/integrador3.0/assets/imagenes/productos/691c0b0206638.jpg', 1, '2025-11-17 22:02:06'),
@@ -153,7 +153,9 @@ INSERT INTO `productos` (`id`, `nombre`, `descripcion`, `precio`, `stock`, `cant
 (8, 'Durazno', 'Durazno jugoso y dulce. Excelente para consumo fresco, conservas y postres.', 6000.00, 2, 33, 2, '/integrador3.0/assets/imagenes/productos/691c0362b611c.jpg', 1, '2025-11-17 22:02:06'),
 (9, 'Ciruela', 'Ciruela dulce y jugosa. Perfecta para consumo fresco y preparación de mermeladas.', 7000.00, 10, 16, 2, '/integrador3.0/assets/imagenes/productos/691bfad9c4c2f.jpg', 0, '2025-11-17 22:02:06'),
 (10, 'Uva venus negra', 'Uva de mesa sin semillas, de maduración muy temprana, apreciada por su intenso color oscuro, sabor dulce y textura jugosa', 7000.00, 2, 1, 3, '/integrador3.0/assets/imagenes/productos/691bfbc3bc2c5.jpg', 1, '2025-11-18 04:53:23'),
-(11, 'Ciruela roja', 'Conocida por su piel de color rojo intenso y su pulpa jugosa y dulce, que puede ser anaranjada o roja por dentro.', 6000.00, 8, 2, 2, '/integrador3.0/assets/imagenes/productos/691bff96ec749.jpg', 1, '2025-11-18 05:09:42');
+(11, 'Ciruela roja', 'Conocida por su piel de color rojo intenso y su pulpa jugosa y dulce, que puede ser anaranjada o roja por dentro.', 7000.00, 6, 4, 2, '/integrador3.0/assets/imagenes/productos/691bff96ec749.jpg', 1, '2025-11-18 05:09:42'),
+(12, 'Ciruela amarilla', 'Fruta de forma redonda u ovalada, con piel lisa y brillante de color amarillo dorado y pulpa jugosa, dulce y ligeramente ácida. Es una fuente de vitaminas (como la C) y fibra, y se puede consumir fresca o en diversas recetas', 6500.00, 10, 0, 2, '/integrador3.0/assets/imagenes/productos/691cb9421b80a.jpg', 1, '2025-11-18 18:21:54'),
+(13, 'Pera de agua', 'jssjjsjakaka', 7000.00, 6, 0, 3, '/integrador3.0/assets/imagenes/productos/691ce74631d1b.jpg', 1, '2025-11-18 21:38:14');
 
 -- --------------------------------------------------------
 
@@ -178,10 +180,10 @@ CREATE TABLE `usuarios` (
 
 INSERT INTO `usuarios` (`id`, `nombre`, `email`, `password`, `rol`, `fecha_registro`, `ultimo_acceso`, `estado`) VALUES
 (2, 'Usuario Demo', 'usuario@viveromym.com', '$2a$12$ov79AoZ9SE8nWj0mlV/hB.IHIvTwyp0t0BdVLVuwAmM.RKItcVtsC', 'usuario', '2025-11-17 22:00:19', NULL, 1),
-(3, 'nombre prueba', 'prueba@gmail.com', '$2y$12$VBEYj5Uvqs8dOwl5snCToePf.si5PXKZwg4ENC3t53Ge6J4.N5Qkq', 'usuario', '2025-11-18 02:01:44', '2025-11-18 06:33:35', 1),
+(3, 'nombre prueba', 'prueba@gmail.com', '$2y$12$VBEYj5Uvqs8dOwl5snCToePf.si5PXKZwg4ENC3t53Ge6J4.N5Qkq', 'usuario', '2025-11-18 02:01:44', '2025-11-18 21:38:42', 1),
 (4, 'kiara gamarra', 'kigama@gmail.com', '$2y$12$NRKRfSDmquNWIapFg3SeTufFHq98sOMrTHRipOv4WQ.Lr4z0Zf0Q6', 'usuario', '2025-11-18 02:17:43', NULL, 1),
 (5, 'nombre dos', 'pruebaa@gmail.com', '$2y$12$Nb5oNYZUkDqGCRDDpXk9SevpNmeGeMokXlVzj8y7Qg8O40yEd.jza', 'usuario', '2025-11-18 02:38:15', '2025-11-18 03:19:49', 1),
-(6, 'Gonzalo Gonzalez', 'gg@gmail.com', '$2y$12$OPI.ywKYF7.yq/ieNpXQVOzLCjruS5FB2kkgRKPFuVjTA9Zl9WWY.', 'usuario', '2025-11-18 06:47:23', '2025-11-18 06:57:22', 1);
+(6, 'Gonzalo Gonzalez', 'gg@gmail.com', '$2y$12$OPI.ywKYF7.yq/ieNpXQVOzLCjruS5FB2kkgRKPFuVjTA9Zl9WWY.', 'usuario', '2025-11-18 06:47:23', '2025-11-18 07:59:39', 1);
 
 -- --------------------------------------------------------
 
@@ -198,6 +200,15 @@ CREATE TABLE `ventas` (
   `subtotal` decimal(10,2) NOT NULL,
   `fecha_venta` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `ventas`
+--
+
+INSERT INTO `ventas` (`id`, `usuario_id`, `producto_id`, `cantidad`, `precio_unitario`, `subtotal`, `fecha_venta`) VALUES
+(1, 6, 1, 5, 6000.00, 30000.00, '2025-11-18 07:59:58'),
+(2, 3, 1, 2, 5000.00, 10000.00, '2025-11-18 20:24:22'),
+(3, 3, 11, 2, 7000.00, 14000.00, '2025-11-18 21:39:29');
 
 --
 -- Índices para tablas volcadas
@@ -288,7 +299,7 @@ ALTER TABLE `pedidos_detalles`
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
@@ -300,7 +311,7 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `ventas`
 --
 ALTER TABLE `ventas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Restricciones para tablas volcadas
