@@ -1,15 +1,11 @@
-/**
- * Script para el dashboard del panel administrativo
- */
+/* Script para el dashboard del panel administrativo */
 
 document.addEventListener('DOMContentLoaded', async () => {
     await cargarEstadisticas();
     setInterval(cargarEstadisticas, 10000);
 });
 
-/**
- * Cargar estadísticas del dashboard
- */
+/* Cargar estadísticas del dashboard */
 async function cargarEstadisticas() {
     try {
         // Obtener productos
@@ -18,7 +14,7 @@ async function cargarEstadisticas() {
             const productos = productosRes.productos || [];
             document.getElementById('total-productos').textContent = productos.length;
 
-            // Calcular total de ventas (cantidad_vendida)
+            // Calcular total de ventas 
             const totalVentas = productos.reduce((sum, p) => sum + (parseInt(p.cantidad_vendida) || 0), 0);
             document.getElementById('total-ventas').textContent = totalVentas;
 
@@ -26,7 +22,7 @@ async function cargarEstadisticas() {
             window.productosData = productos;
         }
 
-        // === LÓGICA DE INGRESOS (CORREGIDA) ===
+        // Lógica de ingresos
         const ingresosRes = await apiRequest('/ventas/ingresos-totales.php').catch(() => ({ estado: 'error', total_ingresos: 0 }));
         if (ingresosRes.estado === 'exitoso') {
             const totalIngresos = parseFloat(ingresosRes.total_ingresos) || 0;
@@ -35,16 +31,14 @@ async function cargarEstadisticas() {
         } else {
             document.getElementById('total-ingresos').textContent = '$0';
         }
-        // ===========================================
-
-        // === LÓGICA PARA VENTAS REALES (CORREGIDA) ===
+        
+        // Lógica de ventas
         const ventasRes = await apiRequest('/ventas/obtener.php').catch(() => ({ estado: 'error' }));
         if (ventasRes.estado === 'exitoso') {
             window.ventasData = ventasRes.ventas || [];
         } else {
             window.ventasData = [];
         }
-        // =================================================
 
         // Obtener usuarios únicos desde la API
         const usuariosRes = await apiRequest('/usuario/obtener.php').catch(() => ({ estado: 'error' }));
@@ -61,48 +55,37 @@ async function cargarEstadisticas() {
     }
 }
 
-/**
- * Abre modal de productos
- */
+/* Abre modal de productos */
 function abrirModalProductos() {
     const modal = document.getElementById('modal-productos');
     modal.style.display = 'flex';
-    
     if (window.productosData) {
         mostrarProductosEnModal();
     }
 }
 
-/**
- * Abre modal de ventas
- */
+/* Abre modal de ventas */
 function abrirModalVentas() {
     const modal = document.getElementById('modal-ventas');
     modal.style.display = 'flex';
     mostrarVentasEnModal();
 }
 
-/**
- * Abre modal de ingresos
- */
+/* Abre modal de ingresos */
 function abrirModalIngresos() {
     const modal = document.getElementById('modal-ingresos');
     modal.style.display = 'flex';
     mostrarIngresosEnModal();
 }
 
-/**
- * Abre modal de usuarios
- */
+/* Abre modal de usuarios */
 function abrirModalUsuarios() {
     const modal = document.getElementById('modal-usuarios');
     modal.style.display = 'flex';
     mostrarUsuariosEnModal();
 }
 
-/**
- * Cierra modal
- */
+/* Cierra modal */
 function cerrarModal(modalId) {
     const modal = document.getElementById(modalId);
     if (modal) {
@@ -110,9 +93,7 @@ function cerrarModal(modalId) {
     }
 }
 
-/**
- * Muestra productos en el modal
- */
+/* Muestra productos en el modal */
 function mostrarProductosEnModal() {
     const tbody = document.getElementById('tbody-productos');
     const productos = (window.productosData || []).sort((a, b) => 
@@ -135,9 +116,7 @@ function mostrarProductosEnModal() {
     `).join('');
 }
 
-/**
- * Muestra ventas en el modal (USANDO DATOS REALES DE VENTAS)
- */
+/* Muestra ventas en el modal */
 function mostrarVentasEnModal() {
     const tbody = document.getElementById('tbody-ventas');
     const ventas = window.ventasData || []; // Usa la data real de ventas
@@ -163,9 +142,7 @@ function mostrarVentasEnModal() {
     }).join('');
 }
 
-/**
- * Muestra ingresos en el modal (USANDO DATOS REALES DE VENTAS AGRUPADOS POR DÍA)
- */
+/* Muestra ingresos en el modal */
 function mostrarIngresosEnModal() {
     const tbody = document.getElementById('tbody-ingresos');
     const ventas = window.ventasData || [];
@@ -208,9 +185,7 @@ function mostrarIngresosEnModal() {
     tbody.innerHTML = filasIngresos;
 }
 
-/**
- * Muestra usuarios en el modal
- */
+/* Muestra usuarios en el modal */
 function mostrarUsuariosEnModal() {
     const tbody = document.getElementById('tbody-usuarios');
     const usuarios = window.usuariosData || [];
@@ -235,9 +210,7 @@ function mostrarUsuariosEnModal() {
     }).join('');
 }
 
-/**
- * Filtra productos en el modal
- */
+/* Filtra productos en el modal */
 function filtrarProductos() {
     const searchInput = document.getElementById('search-productos');
     const tbody = document.getElementById('tbody-productos');

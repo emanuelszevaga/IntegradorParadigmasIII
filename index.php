@@ -130,35 +130,19 @@
             </div>
         </section>
 
-        <!-- sección productos mas vendidos (plugin)-->
+        <!-- sección productos mas vendidos (plugin) -->
         <section class="productos-mas-vendidos">
-            <h2 class="ofertas-title">Productos más vendidos</h2>
-            
-            <!-- Carrusel generado dinámicamente desde JavaScript, limitado a 5 productos -->
-            <div class="carrusel-productos container" id="carrusel-mas-vendidos">
-                <div class="producto-slide">
-                    <img src="assets/imagenes/producto1.jpg" alt="Limón 4 estaciones">
-                    <h3>Limón 4 estaciones</h3>
-                    <p class="precio">$6.000</p>
-                </div>
-                <div class="producto-slide">
-                    <img src="assets/imagenes/producto2.jpg" alt="Naranja ombligo">
-                    <h3>Naranja ombligo</h3>
-                    <p class="precio">$6.000</p>
-                </div>
-                <div class="producto-slide">
-                    <img src="assets/imagenes/producto4.jpg" alt="Naranja jugo">
-                    <h3>Naranja de jugo</h3>
-                    <p class="precio">$6.000</p>
-                </div>
-            </div>
+        <h2 class="ofertas-title">Productos más vendidos</h2>
+        <div class="carrusel-productos container" id="carrusel-mas-vendidos">
+            <!-- Los productos se cargan dinámicamente -->
+        </div>
         </section>
 
         <!-- sección productos -->
         <section class="productos">
             <h2>Productos</h2>
             <div class="container productos__grid">
-                <!-- Productos se cargan dinámicamente desde la API, removemos los hardcodeados -->
+                <!-- Los productos se cargan dinámicamente desde la API -->
             </div>
         </section>
 
@@ -383,6 +367,5 @@
             });
         });
         </script>
-        
     </body>
 </html>

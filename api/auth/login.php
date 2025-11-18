@@ -25,7 +25,7 @@ try {
     
     error_log("[LOGIN] Intento de login con email: " . $email);
     
-    // Validaciones básicas
+    // Validaciones 
     if (empty($email)) {
         http_response_code(400);
         echo json_encode(['estado' => 'error', 'mensaje' => 'Email requerido']);
@@ -86,14 +86,13 @@ try {
             $usuario = $resultado_admin->fetch_assoc();
             $stmt_admin->close();
             
-            // Si encontró en administradores, agregar rol
             if ($usuario) {
                 $usuario['rol'] = 'administrador';
             }
         }
     }
     
-    // Verificar si el usuario existe y validar contraseña
+    // Verifica si el usuario existe y valida contraseña
     if (!$usuario) {
         error_log("[LOGIN] Usuario no encontrado: " . $email);
         http_response_code(401);
@@ -120,7 +119,7 @@ try {
     $_SESSION['usuario_rol'] = $usuario['rol'];
     $_SESSION['login_time'] = time();
     
-    // Registrar último acceso
+    // Registra último acceso
     $update_stmt = $conexion->prepare("UPDATE usuarios SET ultimo_acceso = NOW() WHERE id = ?");
     if ($update_stmt) {
         $update_stmt->bind_param("i", $usuario['id']);

@@ -1,7 +1,5 @@
 <?php
-/**
- * Funciones de seguridad para validación y protección
- */
+/* Funciones de seguridad para validación y protección */
 
 /**
  * Valida si el email tiene un formato correcto
@@ -79,7 +77,6 @@ function verificarPassword($password, $hash) {
 
 /**
  * Escapa caracteres especiales para prevenir inyección SQL
- * NOTA: Siempre usar prepared statements cuando sea posible
  * @param mysqli $conexion Conexión a la base de datos
  * @param string $valor Valor a escapar
  * @return string Valor escapado

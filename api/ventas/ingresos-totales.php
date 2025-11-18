@@ -1,6 +1,6 @@
 <?php
 /**
- * API para obtener el total de ingresos (suma de subtotal de todas las ventas)
+ * API para obtener el total de ingresos 
  * GET /api/ventas/ingresos-totales.php
  */
 require_once(__DIR__ . '/../../config/configuracion.php');
@@ -16,7 +16,7 @@ if (!validarAdmin()) {
 try {
     $conexion = obtenerConexion();
     
-    // Suma el campo 'subtotal' de la tabla 'ventas'
+    // Suma el subtotal de la tabla ventas
     $sql = "SELECT COALESCE(SUM(subtotal), 0) as total_ingresos FROM ventas";
     
     $resultado = $conexion->query($sql);

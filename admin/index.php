@@ -1,7 +1,5 @@
 <?php
-/**
- * Panel de Administración - Página principal
- */
+/*Panel de Administración - Página principal*/
 require_once(__DIR__ . '/../config/configuracion.php');
 
 // Redirigir si no es admin
@@ -28,7 +26,7 @@ if (!validarAdmin()) {
                 <span>Vivero Admin</span>
             </div>
             <nav class="sidebar-nav">
-                <!-- Simplificado: solo Dashboard y Productos -->
+                <!-- Dashboard y Productos -->
                 <a href="index.php" class="nav-item active">
                     <i class="fas fa-dashboard"></i> Dashboard
                 </a>
@@ -59,7 +57,7 @@ if (!validarAdmin()) {
             <!-- Content Area -->
             <section class="admin-content">
                 <div class="dashboard-grid">
-                    <!-- Cambió: Productos, Ventas, Ingresos y Usuarios con botones "Ver más" -->
+                    <!-- Productos, Ventas, Ingresos y Usuarios -->
                     <div class="dashboard-card" onclick="abrirModalProductos()">
                         <div class="card-icon"><i class="fas fa-box"></i></div>
                         <div class="card-content">

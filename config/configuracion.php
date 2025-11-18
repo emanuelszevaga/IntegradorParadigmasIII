@@ -1,7 +1,5 @@
 <?php
-/**
- * Configuración global de la aplicación
- */
+/* Configuración global de la aplicación */
 
 // Iniciar sesiones
 if (session_status() === PHP_SESSION_NONE) {
@@ -33,5 +31,4 @@ define('EXTENSIONES_PERMITIDAS', ['jpg', 'jpeg', 'png', 'gif']);
 header('X-Content-Type-Options: nosniff');
 header('X-Frame-Options: SAMEORIGIN');
 header('X-XSS-Protection: 1; mode=block');
-// This was causing conflicts with JSON responses from API endpoints
 ?>

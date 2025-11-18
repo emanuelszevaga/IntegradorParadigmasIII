@@ -1,4 +1,5 @@
 <?php
+/*Panel de Administración - Productos*/
 require_once(__DIR__ . '/../config/configuracion.php');
 
 if (!validarAdmin()) {
@@ -24,7 +25,7 @@ if (!validarAdmin()) {
                 <span>Vivero Admin</span>
             </div>
             <nav class="sidebar-nav">
-                <!-- Simplificado: solo Dashboard y Productos -->
+                <!-- Dashboard y Productos -->
                 <a href="index.php" class="nav-item">
                     <i class="fas fa-dashboard"></i> Dashboard
                 </a>

@@ -1,7 +1,6 @@
 <?php
 /**
  * API para obtener formulario de registro
- * Devuelve un formulario HTML o JSON con estructura
  */
 
 require_once(__DIR__ . '/../../config/configuracion.php');

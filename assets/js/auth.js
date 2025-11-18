@@ -1,6 +1,4 @@
-/**
- * Script para manejar autenticación (login y registro)
- */
+/* Script para manejar autenticación (login y registro) */
 
 const API_BASE = '/integrador3.0/api'
 
@@ -11,9 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 })
 
-/**
- * Manejar login
- */
+/* Manejar login */
 async function handleLogin(e) {
     e.preventDefault()
     
@@ -62,9 +58,7 @@ async function handleLogin(e) {
     }
 }
 
-/**
- * Actualizar interfaz después del login
- */
+/* Actualizar interfaz después del login */
 function actualizarUIPostLogin() {
     const loginBtn = document.getElementById('login-btn')
     if (loginBtn && window.usuarioAutenticado) {

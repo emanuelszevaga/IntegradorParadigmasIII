@@ -1,6 +1,4 @@
-/**
- * Script para la gestión de productos en el panel administrativo
- */
+/* Script para la gestión de productos en el panel administrativo */
 
 let productosActuales = [];
 let productoEnEdicion = null;
@@ -30,9 +28,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 });
 
-/**
- * Cargar todas las categorías en el select
- */
+/* Cargar todas las categorías en el select */
 async function cargarCategorias() {
     const resultado = await apiRequest('/categorias/obtener.php');
 
@@ -56,9 +52,7 @@ async function cargarCategorias() {
     }
 }
 
-/**
- * Cargar todos los productos
- */
+/* Cargar todos los productos */
 async function cargarProductos() {
     console.log('[v0] Cargando productos...');
     const resultado = await apiRequest('/productos/obtener.php');
@@ -72,9 +66,7 @@ async function cargarProductos() {
     }
 }
 
-/**
- * Renderizar tabla de productos
- */
+/* Renderizar tabla de productos */
 function renderizarProductos(productos) {
     const tbody = document.getElementById('productos-tbody');
 
@@ -109,9 +101,7 @@ function renderizarProductos(productos) {
     `).join('');
 }
 
-/**
- * Filtrar productos por búsqueda y categoría
- */
+/* Filtrar productos por búsqueda y categoría */
 function filtrarProductos() {
     const busqueda = document.getElementById('search-input').value.toLowerCase();
     const categoria = document.getElementById('filter-categoria').value;
@@ -126,9 +116,7 @@ function filtrarProductos() {
     renderizarProductos(filtrados);
 }
 
-/**
- * Abrir modal para nuevo producto
- */
+/* Abrir modal para nuevo producto */
 function abrirNuevoProducto() {
     console.log('[v0] Abriendo modal nuevo producto');
     productoEnEdicion = null;
@@ -138,9 +126,7 @@ function abrirNuevoProducto() {
     abrirModal();
 }
 
-/**
- * Editar producto existente
- */
+/* Editar producto existente */
 async function editarProducto(id) {
     console.log('[v0] Editando producto:', id);
 
@@ -166,9 +152,7 @@ async function editarProducto(id) {
     }
 }
 
-/**
- * Preview de imagen
- */
+/* Preview de imagen */
 function previewImagen(e) {
     const archivo = e.target.files[0];
     if (!archivo) return;
@@ -181,9 +165,7 @@ function previewImagen(e) {
     reader.readAsDataURL(archivo);
 }
 
-/**
- * Guardar producto (crear o actualizar)
- */
+/* Guardar producto (crear o actualizar) */
 async function guardarProducto(e) {
     e.preventDefault();
 
@@ -229,9 +211,7 @@ async function guardarProducto(e) {
     }
 }
 
-/**
- * Eliminar producto
- */
+/* Eliminar producto */
 async function eliminarProducto(id) {
     if (!confirm('¿Estás seguro de que deseas eliminar este producto?')) return;
 

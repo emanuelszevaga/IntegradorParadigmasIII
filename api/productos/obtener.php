@@ -2,7 +2,6 @@
 /**
  * API para obtener productos
  * GET /api/productos/obtener.php
- * Parámetros opcionales: id (un producto), categoria, ordenar (vendidos|precio)
  */
 
 require_once(__DIR__ . '/../../config/configuracion.php');
@@ -52,7 +51,7 @@ try {
     $params = [];
     $tipos = "";
     
-    // Filtrar por categoría si se especifica
+    // Filtrar por categoría 
     if ($categoria && validarNoVacio($categoria) && $categoria !== 'todos') {
         $query .= " AND c.nombre = ?";
         $params[] = $categoria;

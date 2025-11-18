@@ -1,8 +1,6 @@
 <?php
-/**
- * Archivo de conexión centralizado a la base de datos MySQL
- * Usa singleton pattern para evitar múltiples conexiones
- */
+/* Archivo de conexión centralizado a la base de datos MySQL */
+/* Usa singleton pattern para evitar múltiples conexiones */
 
 // Variables de configuración
 $config = [
@@ -13,13 +11,14 @@ $config = [
     'base_datos' => 'vivero_mym'
 ];
 
-// Variable para almacenar la conexión (singleton pattern)
+// Variable para almacenar la conexión (patrónsingleton)
 $conexion = null;
 
 /**
  * Obtiene la conexión a la base de datos
  * @return mysqli|false Retorna la conexión o false si falla
  */
+
 function obtenerConexion() {
     global $config, $conexion;
     
@@ -48,9 +47,7 @@ function obtenerConexion() {
     return $conexion;
 }
 
-/**
- * Cierra la conexión a la base de datos
- */
+/* Cierra la conexión a la base de datos */
 function cerrarConexion() {
     global $conexion;
     if ($conexion !== null) {
@@ -59,6 +56,6 @@ function cerrarConexion() {
     }
 }
 
-// Obtener conexión automáticamente al incluir este archivo
+// Obtener conexión automáticamente
 obtenerConexion();
 

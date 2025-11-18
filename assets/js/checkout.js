@@ -1,6 +1,4 @@
-/**
- * Script para manejar el proceso de checkout
- */
+/* Script para manejar el proceso de checkout */
 
 const API_BASE = '/integrador3.0/api'
 
@@ -11,9 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 })
 
-/**
- * Procesar el checkout
- */
+/* Procesar el checkout */
 async function procesarCheckout() {
     console.log("[v0] Iniciando proceso de checkout")
     
@@ -55,7 +51,6 @@ async function procesarCheckout() {
         return null
     }))
     
-    // Filter out null values
     const carritoValido = carritoFormato.filter(item => item !== null)
     
     if (carritoValido.length === 0) {
@@ -104,7 +99,6 @@ async function procesarCheckout() {
                 document.body.style.overflow = 'auto'
             }
             
-            // Reload page to refresh cart
             location.reload()
         } else {
             alert(`Error: ${resultado.mensaje}`)

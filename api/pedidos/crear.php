@@ -1,8 +1,8 @@
 <?php
 /**
- * API para crear un nuevo pedido (checkout)
- * Ahora guarda las ventas individuales en la tabla ventas
+ * API para crear un nuevo pedido 
  */
+
 require_once(__DIR__ . '/../../config/configuracion.php');
 
 header('Content-Type: application/json; charset=utf-8');
@@ -40,7 +40,7 @@ try {
         $usuario_id = $_SESSION['usuario_id'];
         $total = 0;
         
-        // Validar stock y calcular total
+        // Valida stock y calcula total
         $productos_stock = [];
         foreach ($carrito as $item) {
             if (!isset($item['id'], $item['cantidad'], $item['precio'])) {

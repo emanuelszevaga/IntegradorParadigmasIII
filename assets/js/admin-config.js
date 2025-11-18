@@ -1,12 +1,8 @@
-/**
- * Configuración global para el panel de administración
- */
+/* Configuración global para el panel de administración */
 
 const API_BASE = '/integrador3.0/api';
 
-/**
- * Realiza peticiones AJAX a la API
- */
+/* Realiza peticiones AJAX a la API */
 async function apiRequest(endpoint, method = 'GET', data = null) {
     const url = API_BASE + endpoint;
     const options = {
@@ -35,9 +31,7 @@ async function apiRequest(endpoint, method = 'GET', data = null) {
     }
 }
 
-/**
- * Muestra notificación al usuario
- */
+/* Muestra notificación al usuario */
 function mostrarNotificacion(mensaje, tipo = 'success') {
     const notif = document.createElement('div');
     notif.className = `notificacion notificacion-${tipo}`;
@@ -47,9 +41,7 @@ function mostrarNotificacion(mensaje, tipo = 'success') {
     setTimeout(() => notif.remove(), 3000);
 }
 
-/**
- * Cierra modal
- */
+/* Cierra modal */
 function cerrarModal() {
     const modal = document.getElementById('producto-modal');
     if (modal) {
@@ -57,9 +49,7 @@ function cerrarModal() {
     }
 }
 
-/**
- * Abre modal
- */
+/* Abre modal */
 function abrirModal() {
     const modal = document.getElementById('producto-modal');
     if (modal) {

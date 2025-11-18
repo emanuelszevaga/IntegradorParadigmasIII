@@ -1,7 +1,9 @@
+/* Script principal */
+
 document.addEventListener("DOMContentLoaded", async () => {
     const API_BASE = '/integrador3.0/api'
 
-    // === PERSISTENCIA DE SESIÓN CLIENTE ===
+    // Persistencia de sesió del cliente
     let usuarioGuardado = localStorage.getItem('usuarioAutenticado');
     if (usuarioGuardado) {
         try {
@@ -11,11 +13,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             localStorage.removeItem('usuarioAutenticado');
         }
     }
-    // =====================================
 
-    // === FUNCIÓN PARA OBTENER ALIAS DE FILTRO ===
-    // Asegura que los nombres de categorías de la base de datos (ej: 'Cítricos') 
-    // se mapeen a los alias del filtro (ej: 'citricos').
+    // Función para obtener alias de filtro 
+    // Asegura que los nombres de categorías de la base de datos.
+    // Se mapeen a los alias del filtro.
     function getFilterAlias(categoriaNombre) {
         if (!categoriaNombre) return '';
         const lower = categoriaNombre.toLowerCase().trim();
@@ -34,7 +35,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
         return '';
     }
-    // =====================================
 
     async function obtenerProductosDelServidor(categoria = null, ordenar = 'nombre') {
         try {
@@ -422,7 +422,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         })
     }
 
-    // === LÓGICA DE LOGIN/LOGOUT CENTRALIZADA (SOLUCIÓN AL PROBLEMA 1) ===
+    // Lógica login/logout centralizada 
     const loginBtn = document.getElementById("login-btn")
     const loginModal = document.getElementById("login-modal")
     const loginForm = document.getElementById("login-form")
@@ -534,10 +534,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         
         alert('Sesión cerrada correctamente')
     }
-    // === FIN LÓGICA DE LOGIN/LOGOUT CENTRALIZADA ===
 
 
-    // === FUNCIÓN CLAVE PARA CARGA INICIAL Y FILTRADO (SOLUCIÓN AL PROBLEMA 2) ===
+    // Función para carga inicial y filtrado 
     function aplicarFiltroDesdeURLoCategoria(filtroDeseado = null) {
         let filtro = filtroDeseado;
         
@@ -574,8 +573,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         // Aplica el filtro inmediatamente después de renderizar todos los productos
         aplicarFiltroDesdeURLoCategoria(); 
     }
-    // =========================================================================
-
 
     // abrir y cerrar carrito lateral
     const cartBtn = document.querySelector(".container-actions button:nth-child(3)")

@@ -1,6 +1,6 @@
 <?php
 /**
- * API de Logout - Destruye la sesión del usuario
+ * API de Logout - Cierra la sesión del usuario
  * GET /api/auth/logout.php
  */
 
