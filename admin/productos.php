@@ -24,20 +24,12 @@ if (!validarAdmin()) {
                 <span>Vivero Admin</span>
             </div>
             <nav class="sidebar-nav">
+                <!-- Simplificado: solo Dashboard y Productos -->
                 <a href="index.php" class="nav-item">
                     <i class="fas fa-dashboard"></i> Dashboard
                 </a>
                 <a href="productos.php" class="nav-item active">
                     <i class="fas fa-box"></i> Productos
-                </a>
-                <a href="categorias.php" class="nav-item">
-                    <i class="fas fa-tags"></i> Categorías
-                </a>
-                <a href="pedidos.php" class="nav-item">
-                    <i class="fas fa-shopping-cart"></i> Pedidos
-                </a>
-                <a href="usuarios.php" class="nav-item">
-                    <i class="fas fa-users"></i> Usuarios
                 </a>
             </nav>
             <div class="sidebar-logout">

@@ -12,8 +12,8 @@
         <!-- archivo tema de slick -->
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"/>
 
-        <link rel="shortcut icon" href="assets\imagenes\favicon1.png" type="image/png">
-        <link rel="stylesheet" href="assets\css\style.css">
+        <link rel="shortcut icon" href="assets/imagenes/favicon1.png" type="image/png">
+        <link rel="stylesheet" href="assets/css/style.css">
     </head>
     <body>
         <!-- franja superior -->
@@ -37,7 +37,7 @@
                 <div class="section-logo container">
                     <div class="logo-left">
                         <a href="index.php">
-                            <img src="assets\imagenes\logo.png" alt="Vivero MyM logo">
+                            <img src="assets/imagenes/logo.png" alt="Vivero MyM logo">
                         </a>
                     </div>
                     <button class="menu-toggle" id="menu-toggle">
@@ -73,32 +73,32 @@
             <div class="slider-container">
                 <!-- diapositiva 1 -->
                 <div class="slide active">
-                <img src="assets\imagenes\slide1.jpg" alt="Vivero MyM">
-                <div class="slide-content">
-                    <h2>Vivero MyM</h2>
-                    <p>Tu rincón verde comienza acá</p>
-                    <a href="productos.php" class="hero-btn">Ver más</a>
-                </div>
+                    <img src="assets/imagenes/slide1.jpg" alt="Vivero MyM">
+                    <div class="slide-content">
+                        <h2>Vivero MyM</h2>
+                        <p>Tu rincón verde comienza acá</p>
+                        <a href="productos.php" class="hero-btn">Ver más</a>
+                    </div>
                 </div>
 
                 <!-- diapositiva 2 -->
                 <div class="slide">
-                <img src="assets\imagenes\slide4.jpg" alt="Oferta Clave">
-                <div class="slide-content">
-                    <h2>3 Cuotas sin interés</h2>
-                    <p>Solo Comprando por la Web.</p>
-                    <a href="productos.php" class="hero-btn">Ver más</a>
-                </div>
+                    <img src="assets/imagenes/slide4.jpg" alt="Oferta Clave">
+                    <div class="slide-content">
+                        <h2>3 Cuotas sin interés</h2>
+                        <p>Solo Comprando por la Web.</p>
+                        <a href="productos.php" class="hero-btn">Ver más</a>
+                    </div>
                 </div>
 
                 <!-- diapositiva 3 -->
                 <div class="slide">
-                <img src="assets\imagenes\slide3.jpg" alt="Variedades Nuevas">
-                <div class="slide-content">
-                    <h2>Nuevas variedades</h2>
-                    <p>Descrubí las nuevas variedades de citricos</p>
-                    <a href="productos.php" class="hero-btn">Ver más</a>
-                </div>
+                    <img src="assets/imagenes/slide3.jpg" alt="Variedades Nuevas">
+                    <div class="slide-content">
+                        <h2>Nuevas variedades</h2>
+                        <p>Descrubí las nuevas variedades de citricos</p>
+                        <a href="productos.php" class="hero-btn">Ver más</a>
+                    </div>
                 </div>
 
                 <!-- indicadores para cambiar de diapositiva -->
@@ -134,35 +134,21 @@
         <section class="productos-mas-vendidos">
             <h2 class="ofertas-title">Productos más vendidos</h2>
             
-            <div class="carrusel-productos container">
+            <!-- Carrusel generado dinámicamente desde JavaScript, limitado a 5 productos -->
+            <div class="carrusel-productos container" id="carrusel-mas-vendidos">
                 <div class="producto-slide">
-                    <img src="assets\imagenes\producto1.jpg" alt="Limón 4 estaciones">
+                    <img src="assets/imagenes/producto1.jpg" alt="Limón 4 estaciones">
                     <h3>Limón 4 estaciones</h3>
                     <p class="precio">$6.000</p>
                 </div>
                 <div class="producto-slide">
-                    <img src="assets\imagenes\producto2.jpg" alt="Naranja ombligo">
+                    <img src="assets/imagenes/producto2.jpg" alt="Naranja ombligo">
                     <h3>Naranja ombligo</h3>
                     <p class="precio">$6.000</p>
                 </div>
                 <div class="producto-slide">
-                    <img src="assets\imagenes\producto4.jpg" alt="Naranja jugo">
+                    <img src="assets/imagenes/producto4.jpg" alt="Naranja jugo">
                     <h3>Naranja de jugo</h3>
-                    <p class="precio">$6.000</p>
-                </div>
-                <div class="producto-slide">
-                    <img src="assets\imagenes\producto6.jpg" alt="Pomelo rosado">
-                    <h3>Pomelo rosado</h3>
-                    <p class="precio">$6.000</p>
-                </div>
-                <div class="producto-slide sin-stock" 
-                    data-nombre="Durazno" 
-                    data-precio="6000" 
-                    data-imagen="assets\imagenes\producto8.jpg"
-                    data-stock="sin-stock">
-                    <img src="assets\imagenes\producto8.jpg" alt="Durazno">
-                    <div class="etiqueta-stock">Sin stock</div>
-                    <h3>Durazno</h3>
                     <p class="precio">$6.000</p>
                 </div>
             </div>
@@ -172,127 +158,7 @@
         <section class="productos">
             <h2>Productos</h2>
             <div class="container productos__grid">
-                <div class="producto-card citricos"
-                    data-nombre="Limón 4 estaciones" 
-                    data-precio="6000" 
-                    data-imagen="assets\imagenes\producto1.jpg"
-                    data-descripcion="Limón de excelente calidad que produce frutos durante todo el año. Ideal para climas cálidos y templados."
-                    data-stock="disponible">
-                    <img src="assets\imagenes\producto1.jpg" alt="Limón 4 estaciones">
-                    <h3>Limón 4 estaciones</h3>
-                    <p class="precio">$6.000</p>
-                    <p class="cuotas">3 cuotas sin interés de $2.000</p>
-                    <button class="btn-carrito">Agregar al carrito</button>
-                </div>
-
-                <div class="producto-card citricos"
-                    data-nombre="Naranja ombligo" 
-                    data-precio="6000" 
-                    data-imagen="assets\imagenes\producto2.jpg"
-                    data-descripcion="Naranja dulce y jugosa, perfecta para consumo fresco. Frutos grandes sin semillas."
-                    data-stock="disponible">
-                    <img src="assets\imagenes\producto2.jpg" alt="Naranja ombligo">
-                    <h3>Naranja ombligo</h3>
-                    <p class="precio">$6.000</p>
-                    <p class="cuotas">3 cuotas sin interés de $2.000</p>
-                    <button class="btn-carrito">Agregar al carrito</button>
-                </div>
-
-                <div class="producto-card sin-stock tropicales"
-                    data-nombre="Mango" 
-                    data-precio="6000" 
-                    data-imagen="assets\imagenes\producto3.jpg"
-                    data-descripcion="Mango tropical de pulpa dulce y aromática. Excelente para consumo fresco y preparaciones."
-                    data-stock="sin-stock">
-                    <img src="assets\imagenes\producto3.jpg" alt="Mango">
-                    <div class="etiqueta-stock">Sin stock</div>
-                    <h3>Mango</h3>
-                    <p class="precio">$6.000</p>
-                    <p class="cuotas">3 cuotas sin interés de $2.000</p>
-                    <button class="btn-carrito">Agregar al carrito</button>
-                </div>
-
-                <div class="producto-card citricos"
-                    data-nombre="Naranja de jugo" 
-                    data-precio="6000" 
-                    data-imagen="assets\imagenes\producto4.jpg"
-                    data-descripcion="Naranja especialmente seleccionada para jugos. Alto contenido de jugo y sabor intenso."
-                    data-stock="disponible">
-                    <img src="assets\imagenes\producto4.jpg" alt="Naranja jugo">
-                    <h3>Naranja de jugo</h3>
-                    <p class="precio">$6.000</p>
-                    <p class="cuotas">3 cuotas sin interés de $2.000</p>
-                    <button class="btn-carrito">Agregar al carrito</button>
-                </div>
-
-                <div class="producto-card sin-stock tropicales"
-                    data-nombre="Palta" 
-                    data-precio="6000" 
-                    data-imagen="assets\imagenes\producto5.jpg"
-                    data-descripcion="Palta cremosa y nutritiva. Perfecta para ensaladas y preparaciones saludables."
-                    data-stock="sin-stock">
-                    <img src="assets\imagenes\producto5.jpg" alt="Palta">
-                    <div class="etiqueta-stock">Sin stock</div>
-                    <h3>Palta</h3>
-                    <p class="precio">$6.000</p>
-                    <p class="cuotas">3 cuotas sin interés de $2.000</p>
-                    <button class="btn-carrito">Agregar al carrito</button>
-                </div>
-
-                <div class="producto-card citricos"
-                    data-nombre="Pomelo rosado" 
-                    data-precio="6000" 
-                    data-imagen="assets\imagenes\producto6.jpg"
-                    data-descripcion="Pomelo de pulpa rosada, dulce y refrescante. Rico en vitamina C y antioxidantes."
-                    data-stock="disponible">
-                    <img src="assets\imagenes\producto6.jpg" alt="Pomelo rosado">
-                    <h3>Pomelo rosado</h3>
-                    <p class="precio">$6.000</p>
-                    <p class="cuotas">3 cuotas sin interés de $2.000</p>
-                    <button class="btn-carrito">Agregar al carrito</button>
-                </div>
-
-                <div class="producto-card sin-stock citricos"
-                    data-nombre="Kinoto" 
-                    data-precio="6000" 
-                    data-imagen="assets\imagenes\producto7.jpg"
-                    data-descripcion="Cítrico pequeño y aromático. Ideal para mermeladas y decoración de platos."
-                    data-stock="sin-stock">
-                    <img src="assets\imagenes\producto7.jpg" alt="Kinoto">
-                    <div class="etiqueta-stock">Sin stock</div>
-                    <h3>Kinoto</h3>
-                    <p class="precio">$6.000</p>
-                    <p class="cuotas">3 cuotas sin interés de $2.000</p>
-                    <button class="btn-carrito">Agregar al carrito</button>
-                </div>
-
-                <div class="producto-card sin-stock carozo"
-                    data-nombre="Durazno" 
-                    data-precio="6000" 
-                    data-imagen="assets\imagenes\producto8.jpg"
-                    data-descripcion="Durazno jugoso y dulce. Excelente para consumo fresco, conservas y postres."
-                    data-stock="sin-stock">
-                    <img src="assets\imagenes\producto8.jpg" alt="Durazno">
-                    <div class="etiqueta-stock">Sin stock</div>
-                    <h3>Durazno</h3>
-                    <p class="precio">$6.000</p>
-                    <p class="cuotas">3 cuotas sin interés de $2.000</p>
-                    <button class="btn-carrito">Agregar al carrito</button>
-                </div>
-
-                <div class="producto-card sin-stock carozo"
-                    data-nombre="Ciruela" 
-                    data-precio="6000" 
-                    data-imagen="assets\imagenes\producto9.jpg"
-                    data-descripcion="Ciruela dulce y jugosa. Perfecta para consumo fresco y preparación de mermeladas."
-                    data-stock="sin-stock">
-                    <img src="assets\imagenes\producto9.jpg" alt="Ciruela">
-                    <div class="etiqueta-stock">Sin stock</div>
-                    <h3>Ciruela</h3>
-                    <p class="precio">$6.000</p>
-                    <p class="cuotas">3 cuotas sin interés de $2.000</p>
-                    <button class="btn-carrito">Agregar al carrito</button>
-                </div>
+                <!-- Productos se cargan dinámicamente desde la API, removemos los hardcodeados -->
             </div>
         </section>
 
@@ -415,7 +281,7 @@
         <footer>
             <div class="section-footer container">
                 <div class="footer-section-logo">
-                    <img src="assets\imagenes\logo.png" alt="logo">
+                    <img src="assets/imagenes/logo.png" alt="logo">
                     <p>Vivero especializado en citricos, frutales de carozo y frutas tropicales</p>
                     <div class="social-links">
                         <a href="#" class="btn-social-link"><i class="fa-brands fa-instagram"></i></a>
@@ -497,20 +363,20 @@
                     {
                         breakpoint: 1024,
                         settings: {
-                        slidesToShow: 3,
+                            slidesToShow: 3,
                         }
                     },
                     {
                         breakpoint: 600,
                         settings: {
-                        slidesToShow: 2,
+                            slidesToShow: 2,
                         }
                     },
                     {
                         breakpoint: 480,
                         settings: {
-                        slidesToShow: 1,
-                        arrows: false 
+                            slidesToShow: 1,
+                            arrows: false 
                         }
                     }
                 ]

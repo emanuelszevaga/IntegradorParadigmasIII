@@ -28,20 +28,12 @@ if (!validarAdmin()) {
                 <span>Vivero Admin</span>
             </div>
             <nav class="sidebar-nav">
+                <!-- Simplificado: solo Dashboard y Productos -->
                 <a href="index.php" class="nav-item active">
                     <i class="fas fa-dashboard"></i> Dashboard
                 </a>
                 <a href="productos.php" class="nav-item">
                     <i class="fas fa-box"></i> Productos
-                </a>
-                <a href="categorias.php" class="nav-item">
-                    <i class="fas fa-tags"></i> Categorías
-                </a>
-                <a href="pedidos.php" class="nav-item">
-                    <i class="fas fa-shopping-cart"></i> Pedidos
-                </a>
-                <a href="usuarios.php" class="nav-item">
-                    <i class="fas fa-users"></i> Usuarios
                 </a>
             </nav>
             <div class="sidebar-logout">
@@ -67,54 +59,151 @@ if (!validarAdmin()) {
             <!-- Content Area -->
             <section class="admin-content">
                 <div class="dashboard-grid">
-                    <div class="dashboard-card">
+                    <!-- Cambió: Productos, Ventas, Ingresos y Usuarios con botones "Ver más" -->
+                    <div class="dashboard-card" onclick="abrirModalProductos()">
                         <div class="card-icon"><i class="fas fa-box"></i></div>
                         <div class="card-content">
                             <h3>Productos</h3>
                             <p class="card-value" id="total-productos">0</p>
                         </div>
-                        <a href="productos.php" class="card-link">Ver más</a>
+                        <a href="#" class="card-link">Ver más</a>
                     </div>
 
-                    <div class="dashboard-card">
-                        <div class="card-icon"><i class="fas fa-shopping-cart"></i></div>
+                    <div class="dashboard-card" onclick="abrirModalVentas()">
+                        <div class="card-icon"><i class="fas fa-chart-bar"></i></div>
                         <div class="card-content">
-                            <h3>Pedidos</h3>
-                            <p class="card-value" id="total-pedidos">0</p>
+                            <h3>Ventas</h3>
+                            <p class="card-value" id="total-ventas">0</p>
                         </div>
-                        <a href="pedidos.php" class="card-link">Ver más</a>
+                        <a href="#" class="card-link">Ver más</a>
                     </div>
 
-                    <div class="dashboard-card">
+                    <div class="dashboard-card" onclick="abrirModalIngresos()">
                         <div class="card-icon"><i class="fas fa-dollar-sign"></i></div>
                         <div class="card-content">
                             <h3>Ingresos</h3>
                             <p class="card-value" id="total-ingresos">$0</p>
                         </div>
-                        <a href="pedidos.php" class="card-link">Ver más</a>
+                        <a href="#" class="card-link">Ver más</a>
                     </div>
 
-                    <div class="dashboard-card">
+                    <div class="dashboard-card" onclick="abrirModalUsuarios()">
                         <div class="card-icon"><i class="fas fa-users"></i></div>
                         <div class="card-content">
                             <h3>Usuarios</h3>
                             <p class="card-value" id="total-usuarios">0</p>
                         </div>
-                        <a href="usuarios.php" class="card-link">Ver más</a>
+                        <a href="#" class="card-link">Ver más</a>
                     </div>
-                </div>
-
-                <div class="dashboard-section">
-                    <h2>Productos más vendidos</h2>
-                    <div id="productos-vendidos" class="productos-list"></div>
-                </div>
-
-                <div class="dashboard-section">
-                    <h2>Últimos pedidos</h2>
-                    <div id="ultimos-pedidos" class="pedidos-list"></div>
                 </div>
             </section>
         </main>
+    </div>
+
+    <!-- Modal de Productos -->
+    <div id="modal-productos" class="modal">
+        <div class="modal-content modal-large">
+            <button class="modal-close" onclick="cerrarModal('modal-productos')">&times;</button>
+            <div class="modal-header">
+                <h2>Detalles de Productos</h2>
+            </div>
+            <div class="modal-body">
+                <div class="search-bar" style="margin-bottom: 20px;">
+                    <input type="text" id="search-productos" placeholder="Buscar producto..." onkeyup="filtrarProductos()">
+                </div>
+                <table class="modal-table">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Categoría</th>
+                            <th>Precio</th>
+                            <th>Stock</th>
+                            <th>Vendidos</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-productos">
+                        <tr><td colspan="5" class="text-center">Cargando...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Ventas -->
+    <div id="modal-ventas" class="modal">
+        <div class="modal-content modal-large">
+            <button class="modal-close" onclick="cerrarModal('modal-ventas')">&times;</button>
+            <div class="modal-header">
+                <h2>Detalle de Ventas</h2>
+            </div>
+            <div class="modal-body">
+                <table class="modal-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Precio Unit.</th>
+                            <th>Total</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-ventas">
+                        <tr><td colspan="6" class="text-center">Cargando...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Ingresos -->
+    <div id="modal-ingresos" class="modal">
+        <div class="modal-content modal-large">
+            <button class="modal-close" onclick="cerrarModal('modal-ingresos')">&times;</button>
+            <div class="modal-header">
+                <h2>Detalle de Ingresos</h2>
+            </div>
+            <div class="modal-body">
+                <table class="modal-table">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Monto</th>
+                            <th>Productos Vendidos</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-ingresos">
+                        <tr><td colspan="3" class="text-center">Cargando...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Usuarios -->
+    <div id="modal-usuarios" class="modal">
+        <div class="modal-content modal-large">
+            <button class="modal-close" onclick="cerrarModal('modal-usuarios')">&times;</button>
+            <div class="modal-header">
+                <h2>Detalle de Usuarios</h2>
+            </div>
+            <div class="modal-body">
+                <table class="modal-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>Fecha Registro</th>
+                            <th>Total Compras</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-usuarios">
+                        <tr><td colspan="5" class="text-center">Cargando...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
     <script src="../assets/js/admin-config.js"></script>

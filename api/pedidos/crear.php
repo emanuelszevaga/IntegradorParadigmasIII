@@ -1,8 +1,7 @@
 <?php
 /**
  * API para crear un nuevo pedido (checkout)
- * POST /api/pedidos/crear.php
- * Esperado: carrito (array de productos)
+ * Ahora guarda las ventas individuales en la tabla ventas
  */
 require_once(__DIR__ . '/../../config/configuracion.php');
 
@@ -76,20 +75,7 @@ try {
             $total += $item['cantidad'] * $item['precio'];
         }
         
-        $insert_pedido = $conexion->prepare(
-            "INSERT INTO pedidos (usuario_id, total, estado) VALUES (?, ?, 'pendiente')"
-        );
-        if (!$insert_pedido) {
-            throw new Exception("Error: " . $conexion->error);
-        }
-        
-        $insert_pedido->bind_param("id", $usuario_id, $total);
-        if (!$insert_pedido->execute()) {
-            throw new Exception("Error al crear pedido: " . $insert_pedido->error);
-        }
-        
-        $pedido_id = $insert_pedido->insert_id;
-        $insert_pedido->close();
+        $pedido_id = null;
         
         foreach ($carrito as $item) {
             $id_producto = $item['id'];
@@ -97,21 +83,22 @@ try {
             $precio = $item['precio'];
             $subtotal = $cantidad * $precio;
             
-            // Insertar detalle
-            $insert_detalle = $conexion->prepare(
-                "INSERT INTO pedidos_detalles (pedido_id, producto_id, cantidad, precio_unitario, subtotal) 
+            // Insertar en tabla ventas con precio guardado
+            $insert_venta = $conexion->prepare(
+                "INSERT INTO ventas (usuario_id, producto_id, cantidad, precio_unitario, subtotal) 
                 VALUES (?, ?, ?, ?, ?)"
             );
-            if (!$insert_detalle) {
+            if (!$insert_venta) {
                 throw new Exception("Error: " . $conexion->error);
             }
             
-            $insert_detalle->bind_param("iiidd", $pedido_id, $id_producto, $cantidad, $precio, $subtotal);
-            if (!$insert_detalle->execute()) {
-                throw new Exception("Error al insertar detalle: " . $insert_detalle->error);
+            $insert_venta->bind_param("iiidd", $usuario_id, $id_producto, $cantidad, $precio, $subtotal);
+            if (!$insert_venta->execute()) {
+                throw new Exception("Error al insertar venta: " . $insert_venta->error);
             }
-            $insert_detalle->close();
+            $insert_venta->close();
             
+            // Actualizar stock y cantidad_vendida
             $update_stock = $conexion->prepare(
                 "UPDATE productos SET stock = stock - ?, cantidad_vendida = cantidad_vendida + ? WHERE id = ?"
             );
@@ -130,8 +117,7 @@ try {
         
         echo json_encode([
             'estado' => 'exitoso',
-            'mensaje' => 'Pedido creado correctamente',
-            'pedido_id' => $pedido_id,
+            'mensaje' => 'Venta registrada correctamente',
             'total' => $total
         ]);
         
@@ -141,8 +127,8 @@ try {
     }
     
 } catch (Exception $e) {
-    error_log("Error al crear pedido: " . $e->getMessage());
+    error_log("Error al crear venta: " . $e->getMessage());
     http_response_code(500);
     echo json_encode(['estado' => 'error', 'mensaje' => $e->getMessage()]);
 }
-
+?>

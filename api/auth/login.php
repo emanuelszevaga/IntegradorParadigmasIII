@@ -75,6 +75,24 @@ try {
     $usuario = $resultado->fetch_assoc();
     $stmt->close();
     
+    if (!$usuario) {
+        error_log("[LOGIN] Usuario no encontrado en tabla usuarios, buscando en administradores...");
+        
+        $stmt_admin = $conexion->prepare("SELECT id, nombre, email, password FROM administradores WHERE email = ?");
+        if ($stmt_admin) {
+            $stmt_admin->bind_param("s", $email);
+            $stmt_admin->execute();
+            $resultado_admin = $stmt_admin->get_result();
+            $usuario = $resultado_admin->fetch_assoc();
+            $stmt_admin->close();
+            
+            // Si encontró en administradores, agregar rol
+            if ($usuario) {
+                $usuario['rol'] = 'administrador';
+            }
+        }
+    }
+    
     // Verificar si el usuario existe y validar contraseña
     if (!$usuario) {
         error_log("[LOGIN] Usuario no encontrado: " . $email);

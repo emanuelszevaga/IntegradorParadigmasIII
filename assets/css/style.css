@@ -415,9 +415,26 @@ transition: background-color 0.3s ease;
 background-color: var(--green-dark);
 }
 
-.sin-stock {
+/* Mejorado estilo para productos sin stock - ahora más visible y grisáceo */
+.producto-card.sin-stock {
 position: relative;
-opacity: 0.6;
+opacity: 0.7;
+background-color: #f5f5f5;
+}
+
+.producto-card.sin-stock img {
+filter: grayscale(100%);
+}
+
+.producto-card.sin-stock .btn-carrito {
+background-color: #999;
+cursor: not-allowed;
+color: white;
+border: none;
+}
+
+.producto-card.sin-stock .btn-carrito:hover {
+background-color: #999;
 }
 
 .etiqueta-stock {
@@ -431,6 +448,11 @@ padding: 5px 10px;
 border-radius: 5px;
 font-weight: bold;
 z-index: 2;
+}
+
+.sin-stock {
+position: relative;
+opacity: 0.6;
 }
 
 .sin-stock .btn-carrito {
@@ -1293,315 +1315,5 @@ footer {
 .header-bubble {
     flex-direction: column;
     border-radius: 0;
-    width: 100%;
-    margin: 0;
-    padding: 10px 20px;
 }
-
-.section-logo {
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-}
-
-.nav-center nav {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 10px;
-}
-
-.container-actions {
-    justify-content: center;
-}
-
-.beneficios__grid {
-    grid-template-columns: 1fr;
-}
-
-.productos__grid {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 25px;
-}
-
-.footer-links {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-    width: 100%;
-    max-width: 400px;
-}
-
-.footer-section-logo {
-    align-items: center;
-    text-align: center;
-}
-}
-
-/* Extra pequeñas (teléfonos chicos) */
-@media (max-width: 480px) {
-.slide-content {
-    padding: 10px 15px;
-}
-
-.slide-content h2 {
-    font-size: 22px;
-}
-
-.slide-content p {
-    font-size: 14px;
-}
-
-.beneficio-box i {
-    font-size: 28px;
-}
-
-.producto-card img {
-    height: 150px;
-}
-}
-
-.menu-toggle {
-display: none; /* Oculto por defecto (pantallas grandes) */
-background: none;
-border: 1px solid var(--green-medium);
-color: var(--green-medium);
-border-radius: 5px;
-padding: 8px 10px;
-cursor: pointer;
-font-size: 20px;
-}
-
-/* En pantallas grandes: menú visible normalmente */
-.nav-center {
-display: flex;
-justify-content: center;
-}
-
-.nav-center.show {
-display: flex; /* Asegura que no interfiera el toggle */
-}
-
-/* Móviles pequeños */
-@media (max-width: 768px) {
-.menu-toggle {
-    display: block;
-}
-
-.nav-center {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    background-color: white;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 0 0 10px 10px;
-    padding: 10px 0;
-    z-index: 99;
-}
-
-.nav-center.show {
-    display: flex;
-}
-
-.nav-center nav {
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-}
-
-.menu-productos .submenu {
-    position: static;
-    display: none;
-    box-shadow: none;
-    padding-left: 0;
-}
-
-.menu-productos:hover .submenu {
-    display: block;
-}
-
-.slide {
-    height: 350px;
-}
-
-.slide-content h2 {
-    font-size: 26px;
-}
-
-.slide-content p {
-    font-size: 16px;
-}
-
-.beneficio-box {
-    flex-direction: column;
-    text-align: center;
-}
-
-.productos h2 {
-    text-align: center;
-    margin-left: 0;
-}
-
-footer {
-    padding: 40px 15px;
-}
-
-.footer-links {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-}
-
-.newsletter-form {
-    flex-direction: column;
-}
-
-.newsletter-form input,
-.newsletter-form button {
-    width: 100%;
-}
-}
-
-/* Modal responsive */
-@media (max-width: 768px) {
-.modal-body {
-    flex-direction: column;
-    padding: 30px 20px;
-    gap: 25px;
-}
-
-.modal-image {
-    max-width: 100%;
-}
-
-.modal-info h2 {
-    font-size: 24px;
-}
-
-.modal-precio {
-    font-size: 20px;
-}
-
-.modal-close {
-    top: 10px;
-    right: 10px;
-}
-
-.quantity-controls {
-    justify-content: center;
-}
-
-.btn-add-to-cart {
-    width: 100%;
-}
-
-.search-modal-body {
-    padding: 30px 20px;
-}
-
-.login-modal-body {
-    padding: 30px 20px;
-}
-
-.cart-sidebar {
-    width: 100%;
-    right: -100%;
-}
-
-.cart-sidebar.open {
-    right: 0;
-}
-}
-
-/* ESTILOS PARA EL PLUGIN (SLICK CAROUSEL) */
-
-.productos-mas-vendidos {
-    padding: 60px 0;
-    background-color: var(--green-light); /* Un fondo diferente para destacarlo */
-}
-
-.ofertas-title {
-    font-size: 30px;
-    font-weight: 700;
-    color: var(--green-dark);
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-/* El contenedor principal de Slick */
-.carrusel-productos {
-    padding: 0 40px; /* Espacio para las flechas de navegación */
-}
-
-/* Estilo para cada slide de producto */
-.producto-slide {
-    padding: 15px;
-    margin: 0 10px; /* Margen entre slides */
-    background-color: white;
-    border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-    text-align: center;
-}
-
-.producto-slide img {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-    border-radius: 10px;
-    margin-bottom: 10px;
-}
-
-.producto-slide h3 {
-    font-size: 16px;
-    color: #333;
-    margin-bottom: 5px;
-}
-
-.producto-slide .precio {
-    font-size: 18px;
-    font-weight: bold;
-    color: var(--green-medium);
-}
-
-/* Ajustes a las flechas de Slick para que se vean bien */
-.slick-prev:before, .slick-next:before {
-    color: var(--green-medium) !important;
-    font-size: 30px !important;
-}
-
-/* Ajustes a los puntos (dots) de navegación */
-.slick-dots li button:before {
-    color: #ccc !important;
-}
-.slick-dots li.slick-active button:before {
-    color: var(--green-medium) !important;
-}
-
-/* Asegura que la tarjeta con sin-stock esté atenuada */
-.producto-slide.sin-stock {
-    position: relative; /* Necesario para posicionar la etiqueta-stock */
-    opacity: 0.6;
-}
-
-/* Estilo para la etiqueta 'Sin stock' dentro del carrusel */
-.producto-slide .etiqueta-stock {
-    position: absolute;
-    top: 25px; /* Ajusta la posición vertical dentro del slide */
-    left: 25px; /* Ajusta la posición horizontal dentro del slide */
-    background-color: #000000;
-    color: white;
-    font-size: 13px;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-weight: bold;
-    z-index: 2;
-}
-
-/* Ajuste Responsive (móviles) */
-@media (max-width: 768px) {
-    .carrusel-productos {
-        padding: 0 20px;
-    }
 }

@@ -8,7 +8,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                 url += '&categoria=' + encodeURIComponent(categoria)
             }
             
-            const response = await fetch(url)
+            url += '&t=' + Date.now()
+            
+            const response = await fetch(url, { cache: 'no-store' })
             const data = await response.json()
             
             console.log("[v0] Productos obtenidos del servidor:", data)
@@ -35,13 +37,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         contenedor.innerHTML = productos.map(producto => {
             const disponible = producto.stock > 0
             const claseStock = disponible ? 'disponible' : 'sin-stock'
-            const etiquetaStock = disponible ? '' : '<div class="etiqueta-stock">Sin stock</div>'
+            const etiquetaStock = ''
             const deshabilitado = !disponible ? 'disabled' : ''
-            const textoBtnStock = disponible ? 'Agregar al carrito' : 'Agregar al carrito'
+            const textoBtnStock = disponible ? 'Agregar al carrito' : 'Sin stock'
             const imagenNormalizada = producto.imagen.replace(/\\/g, '/')
+            const categoriaClase = producto.categoria_nombre ? producto.categoria_nombre.toLowerCase().replace(/ /g, '-') : ''
             
             return `
-                <div class="producto-card ${producto.categoria_nombre ? producto.categoria_nombre.toLowerCase().replace(/ /g, '-') : ''}" 
+                <div class="producto-card ${categoriaClase}" 
+                    data-id="${producto.id}"
                     data-nombre="${producto.nombre}" 
                     data-precio="${producto.precio}" 
                     data-imagen="${imagenNormalizada}"
@@ -52,12 +56,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                     <h3>${producto.nombre}</h3>
                     <p class="precio">$${Number(producto.precio).toLocaleString('es-AR')}</p>
                     <p class="cuotas">3 cuotas sin interés de $${(producto.precio / 3).toLocaleString('es-AR')}</p>
-                    <button class="btn-carrito" ${deshabilitado}>${textoBtnStock}</button>
+                    <button class="btn-carrito ${claseStock}" ${deshabilitado}>${textoBtnStock}</button>
                 </div>
             `
         }).join('')
         
-        // Reasignar event listeners a las nuevas tarjetas
         asignarEventListenersProductos()
     }
 
@@ -102,24 +105,18 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     function asignarEventListenersProductos() {
-        const productCards = document.querySelectorAll('.producto-card')
-        
-        productCards.forEach((card) => {
-            // Remover listeners antiguos
-            card.replaceWith(card.cloneNode(true))
-        })
-        
         document.querySelectorAll('.producto-card').forEach((card) => {
-            card.addEventListener('click', (e) => {
+            card.addEventListener('click', function(e) {
                 if (e.target.classList.contains('btn-carrito')) {
+                    e.stopPropagation()
                     return
                 }
                 
-                const nombre = card.getAttribute('data-nombre')
-                const precio = card.getAttribute('data-precio')
-                const imagen = card.getAttribute('data-imagen')
-                const descripcion = card.getAttribute('data-descripcion')
-                const stock = card.getAttribute('data-stock')
+                const nombre = this.getAttribute('data-nombre')
+                const precio = this.getAttribute('data-precio')
+                const imagen = this.getAttribute('data-imagen')
+                const descripcion = this.getAttribute('data-descripcion')
+                const stock = this.getAttribute('data-stock')
                 
                 const imagenNormalizada = imagen.replace(/\\/g, '/')
                 document.getElementById('modal-img').src = imagenNormalizada
@@ -152,12 +149,10 @@ document.addEventListener("DOMContentLoaded", async () => {
                 document.body.style.overflow = 'hidden'
             })
             
-            // Event listener para botón agregar al carrito desde tarjeta
             const btnCarrito = card.querySelector('.btn-carrito')
             if (btnCarrito && !btnCarrito.disabled) {
                 btnCarrito.addEventListener('click', (e) => {
                     e.stopPropagation()
-                    // Abrir modal
                     card.click()
                 })
             }
@@ -478,6 +473,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                         window.usuarioAutenticado = resultado.usuario
                         localStorage.setItem('usuarioAutenticado', JSON.stringify(resultado.usuario))
                         
+                        if (resultado.usuario.rol === 'administrador') {
+                            window.location.href = '/integrador3.0/admin/index.php'
+                            return
+                        }
+                        
                         // Update UI
                         actualizarUIPostLogin()
                         
@@ -623,15 +623,48 @@ document.addEventListener("DOMContentLoaded", async () => {
         loginBtn.title = 'Iniciar sesión'
         loginBtn.onclick = null
         
+        cargarProductosCompletos()
+        
         alert('Sesión cerrada correctamente')
     }
 
+    async function cargarProductosCompletos() {
+        const productos = await obtenerProductosDelServidor()
+        renderizarProductosDinamicos(productos)
+        await renderizarCarrouselProductosVendidos()
+    }
+
+    // abrir y cerrar carrito lateral
     const cartBtn = document.querySelector(".container-actions button:nth-child(3)")
     const cartSidebar = document.getElementById("cart-sidebar")
     const cartOverlay = document.getElementById("cart-overlay")
     const cartClose = document.getElementById("cart-close")
     const cartBody = document.getElementById("cart-body")
     const cartFooter = document.getElementById("cart-footer")
+
+    if (cartBtn) {
+        cartBtn.addEventListener('click', () => {
+            cartSidebar.classList.add('open')
+            cartOverlay.classList.add('show')
+            document.body.style.overflow = 'hidden'
+        })
+    }
+
+    if (cartClose) {
+        cartClose.addEventListener('click', () => {
+            cartSidebar.classList.remove('open')
+            cartOverlay.classList.remove('show')
+            document.body.style.overflow = 'auto'
+        })
+    }
+
+    if (cartOverlay) {
+        cartOverlay.addEventListener('click', () => {
+            cartSidebar.classList.remove('open')
+            cartOverlay.classList.remove('show')
+            document.body.style.overflow = 'auto'
+        })
+    }
 
     function updateCartUI() {
         console.log("[v0] Actualizando interfaz del carrito:", cart)
@@ -748,46 +781,17 @@ document.addEventListener("DOMContentLoaded", async () => {
         updateCartUI()
     }
 
-    // abrir y cerrar carrito lateral
-    if (cartBtn && cartSidebar) {
-        cartBtn.addEventListener("click", () => {
-            cartSidebar.classList.add("open")
-            cartOverlay.classList.add("show")
-            document.body.style.overflow = "hidden"
-        })
-
-        cartClose.addEventListener("click", () => {
-            cartSidebar.classList.remove("open")
-            cartOverlay.classList.remove("show")
-            document.body.style.overflow = "auto"
-        })
-
-        cartOverlay.addEventListener("click", () => {
-            cartSidebar.classList.remove("open")
-            cartOverlay.classList.remove("show")
-            document.body.style.overflow = "auto"
-        })
-
-        // Use real checkout
-        const checkoutBtn = document.querySelector(".btn-checkout")
-        if (checkoutBtn) {
-            checkoutBtn.addEventListener("click", () => {
-                if (cart.length > 0) {
-                    procesarCheckout()
-                }
-            })
-        }
-    }
-
-    // Cargar productos dinámicamente
-    const productos = await obtenerProductosDelServidor()
-    renderizarProductosDinamicos(productos)
-    
-    // Cargar productos más vendidos
-    await renderizarCarrouselProductosVendidos()
+    await cargarProductosCompletos()
     
     // actualiza la interfaz al cargar
     updateCartUI()
+
+    // para reflejar cambios realizados por el administrador
+    setInterval(async () => {
+        console.log("[v0] Actualizando productos del servidor...")
+        const productos = await obtenerProductosDelServidor()
+        renderizarProductosDinamicos(productos)
+    }, 30000)
 })
 
 function procesarCheckout() {
