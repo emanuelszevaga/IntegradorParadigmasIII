@@ -415,7 +415,36 @@ body {
 }
 
 .modal-content.modal-large {
-    max-width: 600px;
+    max-width: 900px;
+}
+
+.modal-body {
+    padding: 30px; 
+}
+
+.modal-table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto; 
+    margin-top: 15px; /* Espacio superior para separar del título/buscador */
+}
+
+.modal-table th {
+    padding: 12px 15px; 
+    text-align: left;
+    font-weight: 600;
+    color: #333;
+    background: #f8f8f8;
+}
+
+.modal-table td {
+    padding: 12px 15px; 
+    border-bottom: 1px solid #f0f0f0;
+    white-space: normal; /* Asegura que el texto largo se envuelva */
+}
+
+.modal-table tbody tr:hover {
+    background: #fafafa;
 }
 
 .modal-close {

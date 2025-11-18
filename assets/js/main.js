@@ -1,19 +1,54 @@
 document.addEventListener("DOMContentLoaded", async () => {
     const API_BASE = '/integrador3.0/api'
 
+    // === PERSISTENCIA DE SESIÓN CLIENTE ===
+    // Lee el estado del usuario al cargar la página para mantener la sesión visualmente.
+    let usuarioGuardado = localStorage.getItem('usuarioAutenticado');
+    if (usuarioGuardado) {
+        try {
+            window.usuarioAutenticado = JSON.parse(usuarioGuardado);
+            actualizarUIPostLogin(); 
+        } catch(e) {
+            console.error("[v0] Error al parsear usuario de localStorage:", e);
+            localStorage.removeItem('usuarioAutenticado');
+        }
+    }
+    // =====================================
+
+    // === FUNCIÓN CORREGIDA PARA EL FILTRADO ===
+    function getFilterAlias(categoriaNombre) {
+        if (!categoriaNombre) return '';
+        const lower = categoriaNombre.toLowerCase().trim();
+        
+        // Mapea el nombre completo del DB al alias corto usado en data-filter
+        if (lower.includes('cítricos') || lower.includes('citricos')) {
+            return 'citricos';
+        }
+        if (lower.includes('carozo')) { 
+            return 'carozo';
+        }
+        if (lower.includes('tropicales')) {
+            return 'tropicales';
+        }
+        return '';
+    }
+    // =====================================
+
     async function obtenerProductosDelServidor(categoria = null, ordenar = 'nombre') {
         try {
             let url = API_BASE + '/productos/obtener.php?ordenar=' + ordenar
+            // Agregamos el filtro de categoría a la URL de la API si se proporciona.
+            // Si la categoría es 'todos', no agregamos filtro.
             if (categoria && categoria !== 'todos') {
-                url += '&categoria=' + encodeURIComponent(categoria)
+                // La API /productos/obtener.php espera el nombre de la categoría (ej: Cítricos)
+                // Opcionalmente se podría enviar el ID. Vamos a enviar el ID de la categoría para mayor seguridad.
+                // Como no tenemos el ID aquí, obtendremos todos y filtramos por clase en el cliente (como se hace abajo).
             }
             
             url += '&t=' + Date.now()
             
             const response = await fetch(url, { cache: 'no-store' })
             const data = await response.json()
-            
-            console.log("[v0] Productos obtenidos del servidor:", data)
             
             if (data.estado === 'exitoso') {
                 return data.productos || []
@@ -37,19 +72,24 @@ document.addEventListener("DOMContentLoaded", async () => {
         contenedor.innerHTML = productos.map(producto => {
             const disponible = producto.stock > 0
             const claseStock = disponible ? 'disponible' : 'sin-stock'
-            const etiquetaStock = ''
+            const etiquetaStock = disponible ? '' : '<div class="etiqueta-stock">Sin stock</div>'
             const deshabilitado = !disponible ? 'disabled' : ''
             const textoBtnStock = disponible ? 'Agregar al carrito' : 'Sin stock'
             const imagenNormalizada = producto.imagen.replace(/\\/g, '/')
-            const categoriaClase = producto.categoria_nombre ? producto.categoria_nombre.toLowerCase().replace(/ /g, '-') : ''
             
+            // Aplica la clase de categoría para el filtrado en el cliente
+            const categoriaClase = getFilterAlias(producto.categoria_nombre) 
+            
+            // Se debe incluir el data-descripcion para que el modal funcione correctamente
+            const descripcionLimpia = producto.descripcion ? producto.descripcion.replace(/"/g, '&quot;') : '';
+
             return `
                 <div class="producto-card ${categoriaClase}" 
                     data-id="${producto.id}"
                     data-nombre="${producto.nombre}" 
                     data-precio="${producto.precio}" 
                     data-imagen="${imagenNormalizada}"
-                    data-descripcion="${producto.descripcion}"
+                    data-descripcion="${descripcionLimpia}"
                     data-stock="${claseStock}">
                     <img src="${imagenNormalizada}" alt="${producto.nombre}">
                     ${etiquetaStock}
@@ -591,12 +631,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     function actualizarUIPostLogin() {
         const loginBtn = document.getElementById("login-btn")
-        if (loginBtn && window.usuarioAutenticado) {
+        const loginModal = document.getElementById("login-modal")
+
+        if (!loginBtn || !loginModal) return 
+        // Limpiar todos los onclicks para evitar conflictos
+        loginBtn.onclick = null
+        if (window.usuarioAutenticado) {
+            // LOGGED IN: Set up for logout
             const rol = window.usuarioAutenticado.rol || 'usuario'
             const icon = rol === 'administrador' ? 'fa-user-shield' : 'fa-user-check'
             loginBtn.innerHTML = `<i class="fa-solid ${icon}"></i>`
             loginBtn.title = `Conectado como ${window.usuarioAutenticado.nombre} (Click para cerrar sesión)`
             
+            // Asignar solo la lógica de logout
             loginBtn.onclick = (e) => {
                 e.preventDefault()
                 const confirmar = confirm(`¿Deseas cerrar sesión, ${window.usuarioAutenticado.nombre}?`)
@@ -607,7 +654,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         } else {
             loginBtn.innerHTML = `<i class="fa-solid fa-user"></i>`
             loginBtn.title = 'Iniciar sesión'
-            loginBtn.onclick = null
+            
+            // Asignar solo la lógica de abrir modal
+            loginBtn.onclick = (e) => {
+                e.preventDefault()
+                loginModal.style.display = "flex"
+                document.body.style.overflow = "hidden"
+            }
         }
     }
 

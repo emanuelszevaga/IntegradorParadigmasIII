@@ -12,7 +12,8 @@ if (!validarAdmin()) {
 try {
     $conexion = obtenerConexion();
     
-    $sql = "SELECT v.id, v.usuario_id, v.producto_id, p.nombre as producto_nombre, 
+    // Usamos COALESCE para mostrar 'Producto Eliminado' si el JOIN falla (producto borrado)
+    $sql = "SELECT v.id, v.usuario_id, v.producto_id, COALESCE(p.nombre, 'Producto Eliminado') as producto_nombre, 
             v.cantidad, v.precio_unitario, v.subtotal, v.fecha_venta
             FROM ventas v
             LEFT JOIN productos p ON v.producto_id = p.id

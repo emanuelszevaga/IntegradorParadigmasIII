@@ -22,24 +22,37 @@ async function cargarEstadisticas() {
             const totalVentas = productos.reduce((sum, p) => sum + (parseInt(p.cantidad_vendida) || 0), 0);
             document.getElementById('total-ventas').textContent = totalVentas;
 
-            // Calcular ingresos (precio * cantidad_vendida)
-            const totalIngresos = productos.reduce((sum, p) => {
-                return sum + ((parseFloat(p.precio) || 0) * (parseInt(p.cantidad_vendida) || 0));
-            }, 0);
-            document.getElementById('total-ingresos').textContent = `$${totalIngresos.toLocaleString('es-AR')}`;
-
             // Guardar productos para usar en el modal
             window.productosData = productos;
         }
 
+        // === LÓGICA DE INGRESOS (CORREGIDA) ===
+        const ingresosRes = await apiRequest('/ventas/ingresos-totales.php').catch(() => ({ estado: 'error', total_ingresos: 0 }));
+        if (ingresosRes.estado === 'exitoso') {
+            const totalIngresos = parseFloat(ingresosRes.total_ingresos) || 0;
+            document.getElementById('total-ingresos').textContent = `$${totalIngresos.toLocaleString('es-AR')}`;
+            window.totalIngresosGlobal = totalIngresos;
+        } else {
+            document.getElementById('total-ingresos').textContent = '$0';
+        }
+        // ===========================================
+
+        // === LÓGICA PARA VENTAS REALES (CORREGIDA) ===
+        const ventasRes = await apiRequest('/ventas/obtener.php').catch(() => ({ estado: 'error' }));
+        if (ventasRes.estado === 'exitoso') {
+            window.ventasData = ventasRes.ventas || [];
+        } else {
+            window.ventasData = [];
+        }
+        // =================================================
+
         // Obtener usuarios únicos desde la API
-        const usuariosRes = await apiRequest('/usuarios/obtener.php').catch(() => ({ estado: 'error' }));
+        const usuariosRes = await apiRequest('/usuario/obtener.php').catch(() => ({ estado: 'error' }));
         if (usuariosRes.estado === 'exitoso') {
             const usuarios = usuariosRes.usuarios || [];
             document.getElementById('total-usuarios').textContent = usuarios.length;
             window.usuariosData = usuarios;
         } else {
-            // Fallback: si no existe endpoint, mostrar 0
             document.getElementById('total-usuarios').textContent = '0';
         }
 
@@ -123,74 +136,76 @@ function mostrarProductosEnModal() {
 }
 
 /**
- * Muestra ventas en el modal
+ * Muestra ventas en el modal (USANDO DATOS REALES DE VENTAS)
  */
 function mostrarVentasEnModal() {
     const tbody = document.getElementById('tbody-ventas');
-    const productos = window.productosData || [];
-
-    // Simular ventas desde productos que tengan cantidad_vendida > 0
-    const ventas = [];
-    productos.forEach(p => {
-        if (p.cantidad_vendida > 0) {
-            ventas.push({
-                id: p.id,
-                nombre: p.nombre,
-                cantidad: p.cantidad_vendida,
-                precio_unitario: p.precio,
-                total: parseFloat(p.precio) * parseInt(p.cantidad_vendida)
-            });
-        }
-    });
+    const ventas = window.ventasData || []; // Usa la data real de ventas
 
     if (ventas.length === 0) {
         tbody.innerHTML = '<tr><td colspan="6" class="text-center">No hay ventas registradas</td></tr>';
         return;
     }
 
-    tbody.innerHTML = ventas.map((v, idx) => `
-        <tr>
-            <td>#${idx + 1}</td>
-            <td>${v.nombre}</td>
-            <td>${v.cantidad}</td>
-            <td>$${parseFloat(v.precio_unitario).toLocaleString('es-AR')}</td>
-            <td>$${v.total.toLocaleString('es-AR')}</td>
-            <td>${new Date().toLocaleDateString('es-AR')}</td>
-        </tr>
-    `).join('');
+    tbody.innerHTML = ventas.map((v) => {
+        const fecha = new Date(v.fecha_venta).toLocaleDateString('es-AR') + ' ' + new Date(v.fecha_venta).toLocaleTimeString('es-AR');
+        
+        return `
+            <tr>
+                <td>#${v.id}</td>
+                <td>${v.producto_nombre || 'Producto eliminado'}</td>
+                <td>${v.cantidad}</td>
+                <td>$${parseFloat(v.precio_unitario).toLocaleString('es-AR')}</td>
+                <td>$${parseFloat(v.subtotal).toLocaleString('es-AR')}</td>
+                <td>${fecha}</td>
+            </tr>
+        `;
+    }).join('');
 }
 
 /**
- * Muestra ingresos en el modal
+ * Muestra ingresos en el modal (USANDO DATOS REALES DE VENTAS AGRUPADOS POR DÍA)
  */
 function mostrarIngresosEnModal() {
     const tbody = document.getElementById('tbody-ingresos');
-    const productos = window.productosData || [];
+    const ventas = window.ventasData || [];
 
-    // Agrupar ingresos por fecha (simulado: hoy)
-    let totalIngresos = 0;
-    let totalProductos = 0;
-
-    productos.forEach(p => {
-        if (p.cantidad_vendida > 0) {
-            totalIngresos += parseFloat(p.precio) * parseInt(p.cantidad_vendida);
-            totalProductos += parseInt(p.cantidad_vendida);
-        }
-    });
-
-    if (totalProductos === 0) {
+    if (ventas.length === 0) {
         tbody.innerHTML = '<tr><td colspan="3" class="text-center">No hay ingresos registrados</td></tr>';
         return;
     }
 
-    const hoy = new Date().toLocaleDateString('es-AR');
-    tbody.innerHTML = `
-        <tr>
-            <td>${hoy}</td>
-            <td>$${totalIngresos.toLocaleString('es-AR')}</td>
-            <td>${totalProductos} productos</td>
-        </tr>
-    `;
+    // Agrupar ingresos por fecha de venta
+    const ingresosPorDia = ventas.reduce((acc, v) => {
+        // Formatear la fecha a YYYY-MM-DD para agrupar
+        const fechaVenta = v.fecha_venta.split(' ')[0]; 
+        const fechaDisplay = new Date(fechaVenta + 'T00:00:00').toLocaleDateString('es-AR'); // Usa T00 para evitar problemas de zona horaria
+        const subtotal = parseFloat(v.subtotal);
+        const cantidad = parseInt(v.cantidad);
+        
+        if (!acc[fechaDisplay]) {
+            acc[fechaDisplay] = { monto: 0, cantidad: 0, fecha: fechaVenta };
+        }
+        acc[fechaDisplay].monto += subtotal;
+        acc[fechaDisplay].cantidad += cantidad;
+        return acc;
+    }, {});
+
+    // Ordenar por fecha (más reciente primero)
+    const filasIngresos = Object.values(ingresosPorDia)
+        .sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
+        .map(data => {
+            const fechaDisplay = new Date(data.fecha + 'T00:00:00').toLocaleDateString('es-AR');
+            return `
+                <tr>
+                    <td>${fechaDisplay}</td>
+                    <td>$${data.monto.toLocaleString('es-AR')}</td>
+                    <td>${data.cantidad} productos</td>
+                </tr>
+            `;
+        }).join('');
+    
+    tbody.innerHTML = filasIngresos;
 }
 
 /**
@@ -205,15 +220,19 @@ function mostrarUsuariosEnModal() {
         return;
     }
 
-    tbody.innerHTML = usuarios.map(u => `
-        <tr>
-            <td>${u.id}</td>
-            <td>${u.nombre}</td>
-            <td>${u.email}</td>
-            <td>${new Date(u.fecha_registro).toLocaleDateString('es-AR')}</td>
-            <td>$${u.total_compras ? parseFloat(u.total_compras).toLocaleString('es-AR') : '$0'}</td>
-        </tr>
-    `).join('');
+    tbody.innerHTML = usuarios.map(u => {
+        const totalComprado = parseFloat(u.monto_total_comprado) || 0; 
+        
+        return `
+            <tr>
+                <td>${u.id}</td>
+                <td>${u.nombre}</td>
+                <td>${u.email}</td>
+                <td>${new Date(u.fecha_registro).toLocaleDateString('es-AR')}</td>
+                <td>$${totalComprado.toLocaleString('es-AR')}</td>
+            </tr>
+        `;
+    }).join('');
 }
 
 /**
